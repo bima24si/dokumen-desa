@@ -1,4 +1,5 @@
 @extends('layouts.guest.app')
+@include('layouts.guest.wa-float')
 
 @section('content')
 <section class="main-content">
@@ -30,7 +31,7 @@
     <div class="container">
         <div class="row gcr-row">
 
-        @foreach($dataDokumen as $data)
+        @foreach($dataJenisDokumen as $data)
           <!-- Card 1 -->
           <div class="col-md-6">
             <a href="#" class="gcr-card-link">

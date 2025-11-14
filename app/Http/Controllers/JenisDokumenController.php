@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\JenisDokumen;
+use Illuminate\Http\Request;
 
 class JenisDokumenController extends Controller
 {
@@ -12,8 +12,8 @@ class JenisDokumenController extends Controller
      */
     public function index()
     {
-        $data['dataDokumen'] = JenisDokumen::all();
-		return view('guest.home',$data);
+        $data['dataJenisDokumen'] = JenisDokumen::all();
+        return view('pages.guest.dokumen.index', $data);
     }
 
     /**
@@ -21,7 +21,7 @@ class JenisDokumenController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.guest.dokumen.create');
     }
 
     /**
@@ -29,15 +29,14 @@ class JenisDokumenController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $data = $request->validate([
+            'nama_jenis' => 'required|unique:dokumen|max:255',
+            'deskripsi' => 'nullable|string',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        JenisDokumen::create($data);
+
+        return redirect()->route('jenis-dokumen.index')->with('success', 'Jenis dokumen berhasil ditambahkan!');
     }
 
     /**
@@ -45,7 +44,8 @@ class JenisDokumenController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data['dataJenisDokumen'] = JenisDokumen::findOrFail($id);
+        return view('pages.guest.dokumen.edit', $data);
     }
 
     /**
@@ -53,7 +53,16 @@ class JenisDokumenController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $jenisDokumen = JenisDokumen::findOrFail($id);
+
+        $data = $request->validate([
+            'nama_jenis' => 'required|max:255|unique:dokumen,nama_jenis,' . $id . ',jenis_id',
+            'deskripsi' => 'nullable|string',
+        ]);
+
+        $jenisDokumen->update($data);
+
+        return redirect()->route('jenis-dokumen.index')->with('success', 'Jenis dokumen berhasil diubah!');
     }
 
     /**
@@ -61,6 +70,9 @@ class JenisDokumenController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $jenisDokumen = JenisDokumen::findOrFail($id);
+        $jenisDokumen->delete();
+
+        return redirect()->route('jenis-dokumen.index')->with('success', 'Jenis dokumen berhasil dihapus!');
     }
 }

@@ -5,20 +5,25 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\JenisDokumenController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RegisterController;
 
 
-Route::get('/', function () {
-    return view('user.index');
-});
+
+
+Route::resource('/',HomeController::class);
+
 
 Route::resource('dokumen', JenisDokumenController::class);
 Route::resource('warga', WargaController::class);
-Route::get('/user', [UserController::class, 'index']);
-Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
-Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
+Route::resource('user', UserController::class);
+Route::resource('auth', AuthController::class);
+Route::resource('/home', HomeController::class);
+Route::resource('register', RegisterController::class);
+// Tambahkan route login-form
+Route::get('/login', [HomeController::class, 'index'])->name('home.index');
+Route::get('/login', [AuthController::class, 'index'])->name('login-form');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-Route::get('/', function () {
-    return view('index');
-})->name('home');
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -13,21 +14,17 @@ class AuthController extends Controller
      */
     public function index()
     {
-        return view('auth.login-form');
+        return view('pages.auth.login-form');
     }
 
-    /**
-     * Menampilkan halaman registrasi
-     */
-    public function showRegister()
-    {
-        return view('auth.register');
-    }
 
     /**
      * Handle logika form login
      */
-  public function login(Request $request)
+  /**
+ * Handle logika form login
+ */
+public function login(Request $request)
 {
     $request->validate([
         'username' => 'required|max:20',
@@ -40,13 +37,10 @@ class AuthController extends Controller
         'password.regex' => 'Password harus mengandung setidaknya satu huruf kapital'
     ]);
 
-    // SELALU SUKSES TANPA VALIDASI PASSWORD KHUSUS
-    $data['username'] = $request->username;
-    $data['password'] = $request->password;
-
-    return view('auth.login-sucses', $data);
+    // Redirect ke halaman home setelah login berhasil
+    return redirect()->route('home.index') // atau '/' sesuai route home Anda
+        ->with('success', 'Login berhasil! Selamat datang.');
 }
-
     /**
      * Handle logika form register (CREATE User)
      */
@@ -115,11 +109,11 @@ class AuthController extends Controller
      * Handle logout
      */
     public function logout()
-    {
-        session()->forget(['admin_logged_in', 'admin_username', 'admin_email', 'admin_role']);
-        return redirect()->route('login')
-            ->with('success', 'Anda telah logout!');
-    }
+{
+    session()->forget(['admin_logged_in', 'admin_username', 'admin_email', 'admin_role']);
+    return redirect()->route('login-form') // PERBAIKAN: hapus 'auth.'
+        ->with('success', 'Anda telah logout!');
+}
 
     /**
      * Show the form for creating a new resource.

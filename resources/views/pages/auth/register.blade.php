@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Login</title>
+    <title>Halaman Registrasi</title>
     <style>
         * {
             margin: 0;
@@ -18,28 +18,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 1rem;
         }
 
-        .login-container {
+        .register-container {
             background: white;
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
         }
 
-        .login-header {
+        .register-header {
             text-align: center;
             margin-bottom: 2rem;
         }
 
-        .login-header h1 {
+        .register-header h1 {
             color: #333;
             margin-bottom: 0.5rem;
         }
 
-        .login-header p {
+        .register-header p {
             color: #666;
         }
 
@@ -55,6 +56,7 @@
         }
 
         input[type="text"],
+        input[type="email"],
         input[type="password"] {
             width: 100%;
             padding: 0.75rem;
@@ -65,12 +67,13 @@
         }
 
         input[type="text"]:focus,
+        input[type="email"]:focus,
         input[type="password"]:focus {
             outline: none;
             border-color: #667eea;
         }
 
-        .btn-login {
+        .btn-register {
             width: 100%;
             padding: 0.75rem;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -83,7 +86,7 @@
             transition: transform 0.2s;
         }
 
-        .btn-login:hover {
+        .btn-register:hover {
             transform: translateY(-2px);
         }
 
@@ -99,6 +102,12 @@
             border: 1px solid #f5c6cb;
         }
 
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
         .form-info {
             background-color: #e7f3ff;
             padding: 0.75rem;
@@ -111,23 +120,41 @@
         .form-info ul {
             margin-left: 1rem;
         }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h1>🔐 Login</h1>
-            <p>Silakan masuk ke akun Anda</p>
+    <div class="register-container">
+        <div class="register-header">
+            <h1>👤 Daftar Akun Baru</h1>
+            <p>Silakan buat akun baru Anda</p>
         </div>
 
-        <!-- Informasi ketentuan login -->
+        <!-- Informasi ketentuan registrasi -->
         <div class="form-info">
-            <strong>Ketentuan Login:</strong>
+            <strong>Ketentuan Registrasi:</strong>
             <ul>
-                <li>Username dan password wajib diisi</li>
-                <li>Password minimal 3 karakter</li>
-                <li>Password harus mengandung huruf kapital</li>
-                <li>Login berhasil jika username dan password sama</li>
+                <li>Semua kolom wajib diisi</li>
+                <li>Nama minimal 3 karakter</li>
+                <li>Email harus valid dan unik</li>
+                <li>Password minimal 8 karakter</li>
+                <li>Password harus mengandung huruf kapital dan angka</li>
+                <li>Konfirmasi password harus sama dengan password</li>
             </ul>
         </div>
 
@@ -142,14 +169,28 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('auth.login') }}">
+        <!-- Menampilkan pesan sukses -->
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('register.store') }}">
             @csrf
 
             <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username"
-                       value="{{ old('username') }}"
-                       placeholder="Masukkan username" required>
+                <label for="name">Nama Lengkap:</label>
+                <input type="text" id="name" name="name"
+                       value="{{ old('name') }}"
+                       placeholder="Masukkan nama lengkap" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email"
+                       value="{{ old('email') }}"
+                       placeholder="Masukkan email" required>
             </div>
 
             <div class="form-group">
@@ -158,8 +199,18 @@
                        placeholder="Masukkan password" required>
             </div>
 
-            <button type="submit" class="btn-login">Login</button>
+            <div class="form-group">
+                <label for="password_confirmation">Konfirmasi Password:</label>
+                <input type="password" id="password_confirmation" name="password_confirmation"
+                       placeholder="Masukkan ulang password" required>
+            </div>
+
+            <button type="submit" class="btn-register">Daftar</button>
         </form>
+
+        <div class="login-link">
+            Sudah punya akun? <a href="{{ route('auth.index') }}">Masuk di sini</a>
+        </div>
     </div>
 </body>
 </html>
