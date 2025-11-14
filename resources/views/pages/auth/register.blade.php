@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="id">
+<<<<<<< HEAD
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Registrasi</title>
+=======
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Daftar</title>
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
     <style>
         * {
             margin: 0;
@@ -73,6 +81,28 @@
             border-color: #667eea;
         }
 
+<<<<<<< HEAD
+=======
+        .password-requirements {
+            background-color: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #6c757d;
+            border-left: 4px solid #667eea;
+        }
+
+        .password-requirements ul {
+            margin-left: 1rem;
+            margin-bottom: 0;
+        }
+
+        .password-requirements li {
+            margin-bottom: 0.25rem;
+        }
+
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
         .btn-register {
             width: 100%;
             padding: 0.75rem;
@@ -84,6 +114,10 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s;
+<<<<<<< HEAD
+=======
+            margin-top: 1rem;
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
         }
 
         .btn-register:hover {
@@ -108,6 +142,26 @@
             border: 1px solid #c3e6cb;
         }
 
+<<<<<<< HEAD
+=======
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
         .form-info {
             background-color: #e7f3ff;
             padding: 0.75rem;
@@ -121,6 +175,7 @@
             margin-left: 1rem;
         }
 
+<<<<<<< HEAD
         .login-link {
             text-align: center;
             margin-top: 1.5rem;
@@ -155,6 +210,54 @@
                 <li>Password minimal 8 karakter</li>
                 <li>Password harus mengandung huruf kapital dan angka</li>
                 <li>Konfirmasi password harus sama dengan password</li>
+=======
+        .password-strength {
+            height: 5px;
+            border-radius: 5px;
+            margin-top: 5px;
+            background-color: #e9ecef;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .weak {
+            background-color: #dc3545;
+            width: 33%;
+        }
+
+        .medium {
+            background-color: #ffc107;
+            width: 66%;
+        }
+
+        .strong {
+            background-color: #28a745;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <h1>📝 Daftar Akun</h1>
+            <p>Buat akun baru untuk mengakses sistem</p>
+        </div>
+
+        <!-- Informasi ketentuan pendaftaran -->
+        <div class="form-info">
+            <strong>Ketentuan Pendaftaran:</strong>
+            <ul>
+                <li>Semua field wajib diisi</li>
+                <li>Username minimal 3 karakter</li>
+                <li>Password minimal 8 karakter</li>
+                <li>Password harus mengandung huruf kapital dan angka</li>
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
             </ul>
         </div>
 
@@ -176,31 +279,69 @@
             </div>
         @endif
 
+<<<<<<< HEAD
         <form method="POST" action="{{ route('register.store') }}">
+=======
+        <form method="POST" action="{{ route('auth.register') }}">
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
             @csrf
 
             <div class="form-group">
                 <label for="name">Nama Lengkap:</label>
+<<<<<<< HEAD
                 <input type="text" id="name" name="name"
                        value="{{ old('name') }}"
                        placeholder="Masukkan nama lengkap" required>
+=======
+                <input type="text" id="name" name="name" value="{{ old('name') }}"
+                    placeholder="Masukkan nama lengkap" required>
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
+<<<<<<< HEAD
                 <input type="email" id="email" name="email"
                        value="{{ old('email') }}"
                        placeholder="Masukkan email" required>
+=======
+                <input type="email" id="email" name="email" value="{{ old('email') }}"
+                    placeholder="Masukkan alamat email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{ old('username') }}"
+                    placeholder="Masukkan username" required>
+                <small style="display: block; margin-top: 5px; color: #6c757d;">Minimal 3 karakter</small>
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
             </div>
 
             <div class="form-group">
                 <label for="password">Password:</label>
+<<<<<<< HEAD
                 <input type="password" id="password" name="password"
                        placeholder="Masukkan password" required>
+=======
+                <input type="password" id="password" name="password" required
+                    placeholder="Masukkan password">
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="password-strength-bar"></div>
+                </div>
+                <div class="password-requirements">
+                    <strong>Persyaratan password:</strong>
+                    <ul>
+                        <li id="length-requirement">Minimal 8 karakter</li>
+                        <li id="capital-requirement">Mengandung huruf kapital</li>
+                        <li id="number-requirement">Mengandung angka</li>
+                    </ul>
+                </div>
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
             </div>
 
             <div class="form-group">
                 <label for="password_confirmation">Konfirmasi Password:</label>
+<<<<<<< HEAD
                 <input type="password" id="password_confirmation" name="password_confirmation"
                        placeholder="Masukkan ulang password" required>
             </div>
@@ -213,4 +354,67 @@
         </div>
     </div>
 </body>
+=======
+                <input type="password" id="password_confirmation" name="password_confirmation" required
+                    placeholder="Ulangi password">
+            </div>
+
+            <button type="submit" class="btn-register">Daftar</button>
+
+            <div class="login-link">
+                Sudah punya akun? <a href="{{ route('auth.login') }}">Login di sini</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password');
+            const strengthBar = document.getElementById('password-strength-bar');
+            const lengthRequirement = document.getElementById('length-requirement');
+            const capitalRequirement = document.getElementById('capital-requirement');
+            const numberRequirement = document.getElementById('number-requirement');
+
+            passwordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                let strength = 0;
+
+                // Reset requirements
+                lengthRequirement.style.color = '#6c757d';
+                capitalRequirement.style.color = '#6c757d';
+                numberRequirement.style.color = '#6c757d';
+
+                // Check length
+                if (password.length >= 8) {
+                    strength += 1;
+                    lengthRequirement.style.color = '#28a745';
+                }
+
+                // Check capital letter
+                if (/[A-Z]/.test(password)) {
+                    strength += 1;
+                    capitalRequirement.style.color = '#28a745';
+                }
+
+                // Check number
+                if (/[0-9]/.test(password)) {
+                    strength += 1;
+                    numberRequirement.style.color = '#28a745';
+                }
+
+                // Update strength bar
+                strengthBar.className = 'password-strength-bar';
+                if (strength === 1) {
+                    strengthBar.classList.add('weak');
+                } else if (strength === 2) {
+                    strengthBar.classList.add('medium');
+                } else if (strength === 3) {
+                    strengthBar.classList.add('strong');
+                }
+            });
+        });
+    </script>
+</body>
+
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
 </html>

@@ -8,8 +8,11 @@
 <!doctype html>
 <html lang="en">
 <head>
+<<<<<<< HEAD
     @include('layouts.guest.wa-float')
 
+=======
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="author" content="Untree.co">
@@ -18,16 +21,53 @@
   <meta name="description" content="" />
   <meta name="keywords" content="bootstrap, bootstrap4" />
 
+<<<<<<< HEAD
 		{{-- start css --}}
         @include('layouts.guest.css')
         {{-- end css --}}
+=======
+		<!-- Bootstrap CSS -->
+		<link href="{{ asset('assets-guest/css/bootstrap.min.css') }}" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+		<link href="{{ asset('assets-guest/css/tiny-slider.css') }}" rel="stylesheet">
+		<link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet">
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
 		<title>Edit Data Warga</title>
 	</head>
 
 	<body>
 
+<<<<<<< HEAD
 		<<!-- Start Header/Navigation -->
 		@include('layouts.guest.navbar')
+=======
+		<!-- Start Header/Navigation -->
+		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+
+			<div class="container">
+				<a class="navbar-brand" href="{{ route('home') }}">Data<span>Warga</span></a>
+
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarsFurni">
+					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('home') }}">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('warga.index') }}">Data Warga</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('dokumen.index') }}">Dokumen</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
 		<!-- End Header/Navigation -->
 
 		<!-- Start Content Section -->
@@ -37,7 +77,11 @@
 					<!-- Breadcrumb -->
 					<nav aria-label="breadcrumb" class="mb-4">
 						<ol class="breadcrumb">
+<<<<<<< HEAD
 							<li class="breadcrumb-item"><a href="{{ route('home.index') }}"><i class="fas fa-home"></i></a></li>
+=======
+							<li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fas fa-home"></i></a></li>
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
 							<li class="breadcrumb-item"><a href="{{ route('warga.index') }}">Data Warga</a></li>
 							<li class="breadcrumb-item active">Edit Warga</li>
 						</ol>
@@ -166,11 +210,30 @@
 		<!-- End Content Section -->
 
 		<!-- Start Footer Section -->
+<<<<<<< HEAD
 		@include('layouts.guest.footer')
 		<!-- End Footer Section -->
 
 		{{-- start js --}}
 		@include('layouts.guest.js')
         {{-- end js --}}
+=======
+		<footer class="footer-section mt-5">
+			<div class="container relative">
+				<div class="border-top copyright">
+					<div class="row pt-4">
+						<div class="col-lg-12">
+							<p class="mb-2 text-center">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!-- End Footer Section -->
+
+		<script src="{{ asset('assets-guest/js/bootstrap.bundle.min.js') }}"></script>
+		<script src="{{ asset('assets-guest/js/tiny-slider.js') }}"></script>
+		<script src="{{ asset('assets-guest/js/custom.js') }}"></script>
+>>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
 	</body>
 </html>
