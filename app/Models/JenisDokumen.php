@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class JenisDokumen extends Model
 {
+    use HasFactory;
 
     protected $table = 'jenis_dokumen';
-    protected $primaryKey = 'jenis_id';
-    public $incrementing = true;
-    protected $keyType = 'int';
-    protected $fillable = [
-        'nama_jenis',
-        'deskripsi',
-    ];
+    protected $fillable = ['nama_jenis', 'deskripsi'];
+
+    // ❌ HAPUS INI (biarkan default)
+    // protected $primaryKey = 'id';
 }

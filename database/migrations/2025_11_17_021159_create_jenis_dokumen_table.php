@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jenis_dokumen', function (Blueprint $table) {
-        $table->increments('jenis_id');
-        $table->string('nama_jenis', 100)->unique(); 
-        $table->text('deskripsi')->nullable();
-        $table->timestamps();
+            $table->id(); // Primary key auto increment
+            $table->string('nama_jenis');
+            $table->text('deskripsi')->nullable();
+            $table->timestamps();
         });
     }
 

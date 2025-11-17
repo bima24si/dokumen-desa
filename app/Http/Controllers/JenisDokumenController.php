@@ -30,13 +30,14 @@ class JenisDokumenController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nama_jenis' => 'required|unique:dokumen|max:255',
+            'nama_jenis' => 'required|unique:jenis_dokumen|max:255',
             'deskripsi' => 'nullable|string',
         ]);
 
         JenisDokumen::create($data);
 
-        return redirect()->route('jenis-dokumen.index')->with('success', 'Jenis dokumen berhasil ditambahkan!');
+        // ✅ PERBAIKI: Sesuaikan dengan route yang ada
+        return redirect()->route('dokumen.index')->with('success', 'Jenis dokumen berhasil ditambahkan!');
     }
 
     /**
@@ -56,13 +57,14 @@ class JenisDokumenController extends Controller
         $jenisDokumen = JenisDokumen::findOrFail($id);
 
         $data = $request->validate([
-            'nama_jenis' => 'required|max:255|unique:dokumen,nama_jenis,' . $id . ',jenis_id',
+            'nama_jenis' => 'required|max:255|unique:jenis_dokumen,nama_jenis,' . $id,
             'deskripsi' => 'nullable|string',
         ]);
 
         $jenisDokumen->update($data);
 
-        return redirect()->route('jenis-dokumen.index')->with('success', 'Jenis dokumen berhasil diubah!');
+        // ✅ PERBAIKI: Sesuaikan dengan route yang ada
+        return redirect()->route('dokumen.index')->with('success', 'Jenis dokumen berhasil diubah!');
     }
 
     /**
@@ -73,6 +75,7 @@ class JenisDokumenController extends Controller
         $jenisDokumen = JenisDokumen::findOrFail($id);
         $jenisDokumen->delete();
 
-        return redirect()->route('jenis-dokumen.index')->with('success', 'Jenis dokumen berhasil dihapus!');
+        // ✅ PERBAIKI: Sesuaikan dengan route yang ada
+        return redirect()->route('dokumen.index')->with('success', 'Jenis dokumen berhasil dihapus!');
     }
 }

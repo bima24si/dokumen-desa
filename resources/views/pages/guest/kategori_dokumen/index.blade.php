@@ -1,6 +1,7 @@
+<!-- [file name]: index.blade.php -->
 @extends('layouts.guest.app')
 
-@section('title', 'Data Users')
+@section('title', 'Kategori Dokumen')
 
 @section('content')
 <!-- Page Header -->
@@ -8,12 +9,12 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8">
-                <h1 class="mb-2">Data Users</h1>
-                <p class="mb-0">Kelola semua user sistem</p>
+                <h1 class="mb-2">Kategori Dokumen</h1>
+                <p class="mb-0">Kelola semua kategori dokumen desa</p>
             </div>
             <div class="col-md-4 text-end">
-                <a href="{{ route('user.create') }}" class="btn btn-light btn-lg">
-                    <i class="fas fa-plus me-2"></i>Tambah User
+                <a href="{{ route('kategori-dokumen.create') }}" class="btn btn-light btn-lg">
+                    <i class="fas fa-plus me-2"></i>Tambah Kategori
                 </a>
             </div>
         </div>
@@ -30,45 +31,49 @@
         </div>
     @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger alert-custom alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <!-- Cards Grid -->
     <div class="card-grid">
-        @forelse ($dataUser as $user)
+        @forelse ($dataKategoriDokumen as $item)
             <div class="card-custom">
                 <div class="card-header-custom">
-                    <h5>{{ $user->name }}</h5>
+                    <h5>{{ $item->nama }}</h5>
+                    <span class="badge bg-primary">{{ $item->dokumenHukum->count() }} Dokumen</span>
                 </div>
                 <div class="card-body-custom">
                     <div class="card-item">
-                        <div class="card-label">ID User</div>
-                        <div class="card-value">{{ $user->id }}</div>
+                        <div class="card-label">ID Kategori</div>
+                        <div class="card-value">{{ $item->kategori_id }}</div>
                     </div>
 
                     <div class="card-item">
-                        <div class="card-label">Email</div>
-                        <div class="card-value">{{ $user->email }}</div>
-                    </div>
-
-                    <div class="card-item">
-                        <div class="card-label">Role</div>
-                        <div class="card-value">{{ $user->role ?: 'User' }}</div>
+                        <div class="card-label">Deskripsi</div>
+                        <div class="card-value">{{ $item->deskripsi ?: 'Tidak ada deskripsi' }}</div>
                     </div>
 
                     <div class="card-item">
                         <div class="card-label">Dibuat</div>
-                        <div class="card-value">{{ $user->created_at->format('d M Y') }}</div>
+                        <div class="card-value">{{ $item->created_at->format('d M Y') }}</div>
                     </div>
 
                     <div class="card-divider"></div>
 
                     <div class="card-actions">
-                        <a href="{{ route('user.show', $user->id) }}" class="btn-action btn-detail">
+                        <a href="{{ route('kategori-dokumen.show', $item->kategori_id) }}" class="btn-action btn-detail">
                             <i class="fas fa-eye"></i>Detail
                         </a>
-                        <a href="{{ route('user.edit', $user->id) }}" class="btn-action btn-edit">
+                        <a href="{{ route('kategori-dokumen.edit', $item->kategori_id) }}" class="btn-action btn-edit">
                             <i class="fas fa-edit"></i>Edit
                         </a>
-                        <form action="{{ route('user.destroy', $user->id) }}" method="POST"
-                              onsubmit="return confirm('Hapus user ini?')" class="d-inline">
+                        <form action="{{ route('kategori-dokumen.destroy', $item->kategori_id) }}" method="POST"
+                              onsubmit="return confirm('Hapus kategori dokumen ini?')" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn-action btn-delete">
@@ -82,11 +87,11 @@
             <div class="col-12">
                 <div class="card-custom">
                     <div class="empty-state">
-                        <i class="fas fa-user-circle"></i>
-                        <h4>Belum ada data user</h4>
-                        <p>Mulai dengan menambahkan user pertama</p>
-                        <a href="{{ route('user.create') }}" class="btn btn-primary mt-3">
-                            <i class="fas fa-plus me-2"></i>Tambah User
+                        <i class="fas fa-tags"></i>
+                        <h4>Belum ada kategori dokumen</h4>
+                        <p>Mulai dengan menambahkan kategori dokumen pertama</p>
+                        <a href="{{ route('kategori-dokumen.create') }}" class="btn btn-primary mt-3">
+                            <i class="fas fa-plus me-2"></i>Tambah Kategori
                         </a>
                     </div>
                 </div>

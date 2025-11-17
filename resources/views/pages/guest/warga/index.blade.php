@@ -1,266 +1,116 @@
-<!-- /*
-* Bootstrap 5
-* Template Name: Furni
-* Template Author: Untree.co
-* Template URI: https://untree.co/
-* License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
-<!doctype html>
-<html lang="en">
-<head>
-<<<<<<< HEAD
-    @include('layouts.guest.wa-float')
+@extends('layouts.guest.app')
 
-=======
->>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="author" content="Untree.co">
-  <link rel="shortcut icon" href="favicon.png">
+@section('title', 'Data Warga')
 
-  <meta name="description" content="" />
-  <meta name="keywords" content="bootstrap, bootstrap4" />
+@section('content')
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-2">Data Warga</h1>
+                <p class="mb-0">Kelola semua data warga desa</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="{{ route('warga.create') }}" class="btn btn-light btn-lg">
+                    <i class="fas fa-plus me-2"></i>Tambah Warga
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-<<<<<<< HEAD
+<div class="container">
+    <!-- Alert -->
+    @if (session('success'))
+        <div class="alert alert-success alert-custom alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-		{{-- start css --}}
-        @include('layouts.guest.css')
-        {{-- end css --}}
-=======
-		<!-- Bootstrap CSS -->
-		<link href="{{ asset('assets-guest/css/bootstrap.min.css') }}" rel="stylesheet">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-		<link href="{{ asset('assets-guest/css/tiny-slider.css') }}" rel="stylesheet">
-		<link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet">
->>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
-		<title>Data Warga</title>
-	</head>
+    <!-- Cards Grid -->
+    <div class="card-grid">
+        @forelse ($dataWarga as $item)
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    <h5>{{ $item->nama }}</h5>
+                </div>
+                <div class="card-body-custom">
+                    <div class="card-item">
+                        <div class="card-label">No KTP</div>
+                        <div class="card-value">{{ $item->no_ktp }}</div>
+                    </div>
 
-	<body>
+                    <div class="card-item">
+                        <div class="card-label">Jenis Kelamin</div>
+                        <div class="card-value">{{ $item->jenis_kelamin }}</div>
+                    </div>
 
-<<<<<<< HEAD
-		<<!-- Start Header/Navigation -->
-		@include('layouts.guest.navbar')
-=======
-		<!-- Start Header/Navigation -->
-		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+                    <div class="card-item">
+                        <div class="card-label">Agama</div>
+                        <div class="card-value">{{ $item->agama }}</div>
+                    </div>
 
-			<div class="container">
-				<a class="navbar-brand" href="{{ route('home') }}">Data<span>Warga</span></a>
+                    <div class="card-item">
+                        <div class="card-label">Pekerjaan</div>
+                        <div class="card-value">{{ $item->pekerjaan ?: '-' }}</div>
+                    </div>
 
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+                    <div class="card-item">
+                        <div class="card-label">Kontak</div>
+                        <div class="card-value">
+                            @if($item->telp)
+                                {{ $item->telp }}<br>
+                            @endif
+                            @if($item->email)
+                                {{ $item->email }}
+                            @else
+                                Tidak ada kontak
+                            @endif
+                        </div>
+                    </div>
 
-				<div class="collapse navbar-collapse" id="navbarsFurni">
-					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-						<li class="nav-item">
-							<a class="nav-link" href="{{ route('dokumen.indexgi') }}">Home</a>
-						</li>
-						<li class="nav-item active">
-							<a class="nav-link" href="{{ route('warga.index') }}">Data Warga</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{ route('dokumen.index') }}">Dokumen</a>
-						</li>
-					</ul>
-				</div>
-			</div>
+                    <div class="card-item">
+                        <div class="card-label">Dibuat</div>
+                        <div class="card-value">{{ $item->created_at->format('d M Y') }}</div>
+                    </div>
 
-		</nav>
->>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
-		<!-- End Header/Navigation -->
+                    <div class="card-divider"></div>
 
-		<!-- Start Content Section -->
-		<div class="container mt-5">
-			<div class="row justify-content-center">
-				<div class="col-lg-12">
-					<!-- Header -->
-					<div class="row mb-4">
-						<div class="col-md-6">
-							<h2 class="section-title">Data Warga</h2>
-							<p>List data seluruh warga</p>
-						</div>
-						<div class="col-md-6 text-end">
-							<a href="{{ route('warga.create') }}" class="btn btn-primary">
-								<i class="fas fa-plus me-2"></i>Tambah Warga
-							</a>
-						</div>
-					</div>
-
-					<!-- Alert -->
-					@if (session('success'))
-						<div class="alert alert-success alert-dismissible fade show" role="alert">
-							{{ session('success') }}
-							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-						</div>
-					@endif
-
-					<!-- Table -->
-					<div class="card border-0 shadow">
-						<div class="card-body">
-							<div class="table-responsive">
-								<table class="table table-hover">
-									<thead class="thead-dark">
-										<tr>
-											<th>No KTP</th>
-											<th>Nama</th>
-											<th>Jenis Kelamin</th>
-											<th>Agama</th>
-											<th>Pekerjaan</th>
-											<th>Telp</th>
-											<th>Email</th>
-											<th width="120">Aksi</th>
-										</tr>
-									</thead>
-									<tbody>
-										@foreach ($dataWarga as $item)
-											<tr>
-												<td>{{ $item->no_ktp }}</td>
-												<td>{{ $item->nama }}</td>
-												<td>{{ $item->jenis_kelamin }}</td>
-												<td>{{ $item->agama }}</td>
-												<td>{{ $item->pekerjaan }}</td>
-												<td>{{ $item->telp }}</td>
-												<td>{{ $item->email }}</td>
-												<td>
-													<div class="btn-group" role="group">
-														<a href="{{ route('warga.edit', $item->warga_id) }}"
-														   class="btn btn-warning btn-sm">
-															<i class="fas fa-edit"></i>
-														</a>
-														<form action="{{ route('warga.destroy', $item->warga_id) }}"
-															  method="POST"
-															  onsubmit="return confirm('Hapus data ini?')">
-															@csrf
-															@method('DELETE')
-															<button type="submit" class="btn btn-danger btn-sm">
-																<i class="fas fa-trash"></i>
-															</button>
-														</form>
-													</div>
-												</td>
-											</tr>
-										@endforeach
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Content Section -->
-
-		<!-- Start Footer Section -->
-<<<<<<< HEAD
-		@include('layouts.guest.footer')
-		<!-- End Footer Section -->
-
-		{{-- start js --}}
-		@include('layouts.guest.js')
-        {{-- end js --}}
-=======
-		<footer class="footer-section">
-			<div class="container relative">
-				<div class="row">
-					<div class="col-lg-8">
-						<div class="subscription-form">
-							<h3 class="d-flex align-items-center">
-								<span class="me-1"><i class="fas fa-envelope"></i></span>
-								<span>Subscribe to Newsletter</span>
-							</h3>
-
-							<form action="#" class="row g-3">
-								<div class="col-auto">
-									<input type="text" class="form-control" placeholder="Enter your name">
-								</div>
-								<div class="col-auto">
-									<input type="email" class="form-control" placeholder="Enter your email">
-								</div>
-								<div class="col-auto">
-									<button class="btn btn-primary">
-										<span class="fa fa-paper-plane"></span>
-									</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-
-				<div class="row g-5 mb-5">
-					<div class="col-lg-4">
-						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Data<span>Warga</span></a></div>
-						<p class="mb-4">Sistem manajemen data warga yang efisien dan terintegrasi.</p>
-
-						<ul class="list-unstyled custom-social">
-							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
-						</ul>
-					</div>
-
-					<div class="col-lg-8">
-						<div class="row links-wrap">
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="{{ route('home') }}">Home</a></li>
-									<li><a href="{{ route('warga.index') }}">Data Warga</a></li>
-									<li><a href="{{ route('dokumen.index') }}">Dokumen</a></li>
-									<li><a href="#">Contact us</a></li>
-								</ul>
-							</div>
-
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">Support</a></li>
-									<li><a href="#">Knowledge base</a></li>
-									<li><a href="#">Live chat</a></li>
-								</ul>
-							</div>
-
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">Jobs</a></li>
-									<li><a href="#">Our team</a></li>
-									<li><a href="#">Leadership</a></li>
-									<li><a href="#">Privacy Policy</a></li>
-								</ul>
-							</div>
-
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">Nordic Chair</a></li>
-									<li><a href="#">Kruzo Aero</a></li>
-									<li><a href="#">Ergonomic Chair</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="border-top copyright">
-					<div class="row pt-4">
-						<div class="col-lg-6">
-							<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved.</p>
-						</div>
-
-						<div class="col-lg-6 text-center text-lg-end">
-							<ul class="list-unstyled d-inline-flex ms-auto">
-								<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
-								<li><a href="#">Privacy Policy</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
-		<!-- End Footer Section -->
-
-		<script src="{{ asset('assets-guest/js/bootstrap.bundle.min.js') }}"></script>
-		<script src="{{ asset('assets-guest/js/tiny-slider.js') }}"></script>
-		<script src="{{ asset('assets-guest/js/custom.js') }}"></script>
->>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
-	</body>
-</html>
+                    <div class="card-actions">
+                        <a href="{{ route('warga.index', $item->warga_id) }}" class="btn-action btn-detail">
+                            <i class="fas fa-eye"></i>Detail
+                        </a>
+                        <a href="{{ route('warga.edit', $item->warga_id) }}" class="btn-action btn-edit">
+                            <i class="fas fa-edit"></i>Edit
+                        </a>
+                        <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST"
+                              onsubmit="return confirm('Hapus data warga ini?')" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-action btn-delete">
+                                <i class="fas fa-trash"></i>Hapus
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="col-12">
+                <div class="card-custom">
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <h4>Belum ada data warga</h4>
+                        <p>Mulai dengan menambahkan data warga pertama</p>
+                        <a href="{{ route('warga.create') }}" class="btn btn-primary mt-3">
+                            <i class="fas fa-plus me-2"></i>Tambah Warga
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endforelse
+    </div>
+</div>
+@endsection
