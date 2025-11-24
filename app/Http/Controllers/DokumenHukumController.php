@@ -6,17 +6,13 @@ use App\Models\DokumenHukum;
 use App\Models\JenisDokumen;
 use App\Models\KategoriDokumen;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Storage;
-=======
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
 
 class DokumenHukumController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-<<<<<<< HEAD
     public function index(Request $request)
     {
         $filterableColumns = ['jenis_id', 'kategori_id', 'status'];
@@ -57,11 +53,6 @@ class DokumenHukumController extends Controller
                 ->count()
         ];
 
-=======
-    public function index()
-    {
-        $data['dataDokumenHukum'] = DokumenHukum::with(['jenisDokumen', 'kategoriDokumen'])->get();
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
         return view('pages.guest.dokumen_hukum.index', $data);
     }
 
@@ -70,7 +61,6 @@ class DokumenHukumController extends Controller
      */
     public function create()
     {
-<<<<<<< HEAD
         $data = [
             'dataJenisDokumen' => JenisDokumen::all(),
             'dataKategoriDokumen' => KategoriDokumen::all()
@@ -87,18 +77,6 @@ class DokumenHukumController extends Controller
         $validatedData = $request->validate([
             'jenis_id' => 'required|exists:jenis_dokumen,id',
             'kategori_id' => 'required|exists:kategori_dokumen,kategori_id',
-=======
-        $data['dataJenisDokumen'] = JenisDokumen::all();
-        $data['dataKategoriDokumen'] = KategoriDokumen::all();
-        return view('pages.guest.dokumen_hukum.create', $data);
-    }
-
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'jenis_id' => 'required|exists:jenis_dokumen,id',
-            'kategori_id' => 'required|exists:kategori_dokumen,kategori_id', // PERBAIKAN: kategori_id
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
             'nomor' => 'required|unique:dokumen_hukum|max:255',
             'judul' => 'required|max:255',
             'tanggal' => 'required|date',
@@ -107,7 +85,6 @@ class DokumenHukumController extends Controller
             'file' => 'nullable|file|mimes:pdf,doc,docx|max:2048'
         ]);
 
-<<<<<<< HEAD
         $dokumenHukum = DokumenHukum::create($validatedData);
 
         // Handle file upload menggunakan when()
@@ -124,11 +101,6 @@ class DokumenHukumController extends Controller
 
         return redirect()->route('dokumen-hukum.index')
             ->with('success', 'Dokumen hukum berhasil ditambahkan!');
-=======
-        DokumenHukum::create($data);
-
-        return redirect()->route('dokumen-hukum.index')->with('success', 'Dokumen hukum berhasil ditambahkan!');
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
     }
 
     /**
@@ -136,18 +108,12 @@ class DokumenHukumController extends Controller
      */
     public function show(string $id)
     {
-<<<<<<< HEAD
         $dataDokumenHukum = DokumenHukum::with(['jenisDokumen', 'kategoriDokumen'])
             ->findOrFail($id);
 
         return view('pages.guest.dokumen_hukum.show', [
             'dataDokumenHukum' => $dataDokumenHukum
         ]);
-=======
-        $data['dataDokumenHukum'] = DokumenHukum::with(['jenisDokumen', 'kategoriDokumen'])
-            ->findOrFail($id);
-        return view('pages.guest.dokumen_hukum.show', $data);
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
     }
 
     /**
@@ -155,18 +121,12 @@ class DokumenHukumController extends Controller
      */
     public function edit(string $id)
     {
-<<<<<<< HEAD
         $data = [
             'dataDokumenHukum' => DokumenHukum::findOrFail($id),
             'dataJenisDokumen' => JenisDokumen::all(),
             'dataKategoriDokumen' => KategoriDokumen::all()
         ];
 
-=======
-        $data['dataDokumenHukum'] = DokumenHukum::findOrFail($id);
-        $data['dataJenisDokumen'] = JenisDokumen::all();
-        $data['dataKategoriDokumen'] = KategoriDokumen::all();
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
         return view('pages.guest.dokumen_hukum.edit', $data);
     }
 
@@ -177,15 +137,9 @@ class DokumenHukumController extends Controller
     {
         $dokumenHukum = DokumenHukum::findOrFail($id);
 
-<<<<<<< HEAD
         $validatedData = $request->validate([
             'jenis_id' => 'required|exists:jenis_dokumen,id',
             'kategori_id' => 'required|exists:kategori_dokumen,kategori_id',
-=======
-        $data = $request->validate([
-            'jenis_id' => 'required|exists:jenis_dokumen,id',
-            'kategori_id' => 'required|exists:kategori_dokumen,kategori_id', // PERBAIKAN: kategori_id (bukan id)
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
             'nomor' => 'required|max:255|unique:dokumen_hukum,nomor,' . $id . ',dokumen_id',
             'judul' => 'required|max:255',
             'tanggal' => 'required|date',
@@ -194,7 +148,6 @@ class DokumenHukumController extends Controller
             'file' => 'nullable|file|mimes:pdf,doc,docx|max:2048'
         ]);
 
-<<<<<<< HEAD
         $dokumenHukum->update($validatedData);
 
         // Handle file upload menggunakan when()
@@ -214,20 +167,6 @@ class DokumenHukumController extends Controller
 
         return redirect()->route('dokumen-hukum.index')
             ->with('success', 'Dokumen hukum berhasil diubah!');
-=======
-        $dokumenHukum->update($data);
-
-        // Handle file upload
-        if ($request->hasFile('file')) {
-            // Delete existing file
-            $dokumenHukum->clearMediaCollection('dokumen_hukum');
-            // Add new file
-            $file = $request->file('file');
-            $dokumenHukum->addMedia($file)->toMediaCollection('dokumen_hukum');
-        }
-
-        return redirect()->route('dokumen-hukum.index')->with('success', 'Dokumen hukum berhasil diubah!');
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
     }
 
     /**
@@ -242,13 +181,7 @@ class DokumenHukumController extends Controller
 
         $dokumenHukum->delete();
 
-<<<<<<< HEAD
         return redirect()->route('dokumen-hukum.index')
             ->with('success', 'Dokumen hukum berhasil dihapus!');
     }
 }
-=======
-        return redirect()->route('dokumen-hukum.index')->with('success', 'Dokumen hukum berhasil dihapus!');
-    }
-}   
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca

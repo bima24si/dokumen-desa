@@ -30,7 +30,6 @@
         </div>
     @endif
 
-<<<<<<< HEAD
     <!-- Filter dan Search Form -->
     <div class="card mb-4">
         <div class="card-body">
@@ -44,7 +43,7 @@
                     </select>
                 </div>
 
-              
+
 
                 <div class="col-md-4">
                     <label for="search" class="form-label">Pencarian</label>
@@ -126,59 +125,6 @@
 
                     <div class="card-actions">
                         <a href="{{ route('warga.show', $item->warga_id) }}" class="btn-action btn-detail">
-=======
-    <!-- Cards Grid -->
-    <div class="card-grid">
-        @forelse ($dataWarga as $item)
-            <div class="card-custom">
-                <div class="card-header-custom">
-                    <h5>{{ $item->nama }}</h5>
-                </div>
-                <div class="card-body-custom">
-                    <div class="card-item">
-                        <div class="card-label">No KTP</div>
-                        <div class="card-value">{{ $item->no_ktp }}</div>
-                    </div>
-
-                    <div class="card-item">
-                        <div class="card-label">Jenis Kelamin</div>
-                        <div class="card-value">{{ $item->jenis_kelamin }}</div>
-                    </div>
-
-                    <div class="card-item">
-                        <div class="card-label">Agama</div>
-                        <div class="card-value">{{ $item->agama }}</div>
-                    </div>
-
-                    <div class="card-item">
-                        <div class="card-label">Pekerjaan</div>
-                        <div class="card-value">{{ $item->pekerjaan ?: '-' }}</div>
-                    </div>
-
-                    <div class="card-item">
-                        <div class="card-label">Kontak</div>
-                        <div class="card-value">
-                            @if($item->telp)
-                                {{ $item->telp }}<br>
-                            @endif
-                            @if($item->email)
-                                {{ $item->email }}
-                            @else
-                                Tidak ada kontak
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="card-item">
-                        <div class="card-label">Dibuat</div>
-                        <div class="card-value">{{ $item->created_at->format('d M Y') }}</div>
-                    </div>
-
-                    <div class="card-divider"></div>
-
-                    <div class="card-actions">
-                        <a href="{{ route('warga.index', $item->warga_id) }}" class="btn-action btn-detail">
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
                             <i class="fas fa-eye"></i>Detail
                         </a>
                         <a href="{{ route('warga.edit', $item->warga_id) }}" class="btn-action btn-edit">
@@ -210,13 +156,10 @@
             </div>
         @endforelse
     </div>
-<<<<<<< HEAD
 
     <!-- Pagination -->
     <div class="mt-3">
         {{ $dataWarga->links('pagination::bootstrap-5') }}
     </div>
-=======
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
 </div>
 @endsection

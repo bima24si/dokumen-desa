@@ -3,7 +3,6 @@
 @section('title', 'Data Users')
 
 @section('content')
-<<<<<<< HEAD
     <!-- Page Header -->
     <div class="page-header">
         <div class="container">
@@ -422,97 +421,4 @@
             }
         }
     </style>
-=======
-<!-- Page Header -->
-<div class="page-header">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h1 class="mb-2">Data Users</h1>
-                <p class="mb-0">Kelola semua user sistem</p>
-            </div>
-            <div class="col-md-4 text-end">
-                <a href="{{ route('user.create') }}" class="btn btn-light btn-lg">
-                    <i class="fas fa-plus me-2"></i>Tambah User
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <!-- Alert -->
-    @if (session('success'))
-        <div class="alert alert-success alert-custom alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle me-2"></i>
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    <!-- Cards Grid -->
-    <div class="card-grid">
-        @forelse ($dataUser as $user)
-            <div class="card-custom">
-                <div class="card-header-custom">
-                    <h5>{{ $user->name }}</h5>
-                </div>
-                <div class="card-body-custom">
-                    <div class="card-item">
-                        <div class="card-label">ID User</div>
-                        <div class="card-value">{{ $user->id }}</div>
-                    </div>
-
-                    <div class="card-item">
-                        <div class="card-label">Email</div>
-                        <div class="card-value">{{ $user->email }}</div>
-                    </div>
-
-                    <div class="card-item">
-                        <div class="card-label">Role</div>
-                        <div class="card-value">{{ $user->role ?: 'User' }}</div>
-                    </div>
-
-                    <div class="card-item">
-                        <div class="card-label">Dibuat</div>
-                        <div class="card-value">{{ $user->created_at->format('d M Y') }}</div>
-                    </div>
-
-                    <div class="card-divider"></div>
-
-                    <div class="card-actions">
-                        <a href="{{ route('user.show', $user->id) }}" class="btn-action btn-detail">
-                            <i class="fas fa-eye"></i>Detail
-                        </a>
-                        <a href="{{ route('user.edit', $user->id) }}" class="btn-action btn-edit">
-                            <i class="fas fa-edit"></i>Edit
-                        </a>
-                        <form action="{{ route('user.destroy', $user->id) }}" method="POST"
-                              onsubmit="return confirm('Hapus user ini?')" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-action btn-delete">
-                                <i class="fas fa-trash"></i>Hapus
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        @empty
-            <div class="col-12">
-                <div class="card-custom">
-                    <div class="empty-state">
-                        <i class="fas fa-user-circle"></i>
-                        <h4>Belum ada data user</h4>
-                        <p>Mulai dengan menambahkan user pertama</p>
-                        <a href="{{ route('user.create') }}" class="btn btn-primary mt-3">
-                            <i class="fas fa-plus me-2"></i>Tambah User
-                        </a>
-                    </div>
-                </div>
-            </div>
-        @endforelse
-    </div>
-</div>
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
 @endsection

@@ -56,10 +56,6 @@ class JenisDokumenController extends Controller
 
         JenisDokumen::create($data);
 
-<<<<<<< HEAD
-=======
-        // ✅ PERBAIKI: Sesuaikan dengan route yang ada
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
         return redirect()->route('dokumen.index')->with('success', 'Jenis dokumen berhasil ditambahkan!');
     }
 
@@ -86,10 +82,6 @@ class JenisDokumenController extends Controller
 
         $jenisDokumen->update($data);
 
-<<<<<<< HEAD
-=======
-        // ✅ PERBAIKI: Sesuaikan dengan route yang ada
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
         return redirect()->route('dokumen.index')->with('success', 'Jenis dokumen berhasil diubah!');
     }
 
@@ -101,10 +93,6 @@ class JenisDokumenController extends Controller
         $jenisDokumen = JenisDokumen::findOrFail($id);
         $jenisDokumen->delete();
 
-<<<<<<< HEAD
-=======
-        // ✅ PERBAIKI: Sesuaikan dengan route yang ada
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
         return redirect()->route('dokumen.index')->with('success', 'Jenis dokumen berhasil dihapus!');
     }
 }
