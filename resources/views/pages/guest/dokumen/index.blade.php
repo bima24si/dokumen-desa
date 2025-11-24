@@ -1,115 +1,128 @@
-<!-- /*
-* Bootstrap 5
-* Template Name: Furni
-* Template Author: Untree.co
-* Template URI: https://untree.co/
-* License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
-<!doctype html>
-<html lang="en">
-<head>
-    @include('layouts.guest.wa-float')
+@extends('layouts.guest.app')
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="author" content="Untree.co">
-  <link rel="shortcut icon" href="favicon.png">
+@section('title', 'Jenis Dokumen')
 
-  <meta name="description" content="" />
-  <meta name="keywords" content="bootstrap, bootstrap4" />
+@section('content')
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="mb-2">Jenis Dokumen</h1>
+                    <p class="mb-0">Kelola semua jenis dokumen desa</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="{{ route('dokumen.create') }}" class="btn btn-light btn-lg">
+                        <i class="fas fa-plus me-2"></i>Tambah Jenis Dokumen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        {{-- start css --}}
+    <div class="container">
+        <!-- Alert -->
+        @if (session('success'))
+            <div class="alert alert-success alert-custom alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-        @include('layouts.guest.css')
-        {{-- end css --}}
-		<title>Jenis Dokumen</title>
-	</head>
+        <!-- Filter dan Search Form -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="GET" action="{{ route('dokumen.index') }}" class="row g-3 align-items-end">
+                    <!-- Filter by Nama Jenis -->
+                    <div class="col-md-3">
+                        <label for="filter_nama" class="form-label">Filter Nama Jenis</label>
+                        <select name="filter_nama" id="filter_nama" class="form-select" onchange="this.form.submit()">
+                            <option value="">Semua Jenis</option>
+                            @foreach ($allJenis as $jenis)
+                                <option value="{{ $jenis->nama_jenis }}"
+                                    {{ request('filter_nama') == $jenis->nama_jenis ? 'selected' : '' }}>
+                                    {{ $jenis->nama_jenis }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-	<body>
+                    <!-- Search -->
+                    <div class="col-md-4">
+                        <label for="search" class="form-label">Pencarian</label>
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" value="{{ request('search') }}"
+                                placeholder="Cari jenis dokumen..." aria-label="Search">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
 
-			<!-- Start Header/Navigation -->
-		@include('layouts.guest.navbar')
-		<!-- End Header/Navigation -->
+                </form>
+            </div>
+        </div>
 
-		<!-- Start Content Section -->
-		<div class="container mt-5">
-			<div class="row justify-content-center">
-				<div class="col-lg-12">
-					<!-- Header -->
-					<div class="row mb-4">
-						<div class="col-md-6">
-							<h2 class="section-title">Jenis Dokumen</h2>
-							<p>List data jenis dokumen</p>
-						</div>
-						<div class="col-md-6 text-end">
-							<a href="{{ route('dokumen.create') }}" class="btn btn-primary">
-								<i class="fas fa-plus me-2"></i>Tambah Jenis Dokumen
-							</a>
-						</div>
-					</div>
+        <!-- Cards Grid -->
+        <div class="card-grid">
+            @forelse ($dataJenisDokumen as $item)
+                <div class="card-custom">
+                    <div class="card-header-custom">
+                        <h5>{{ $item->nama_jenis }}</h5>
+                    </div>
+                    <div class="card-body-custom">
+                        <div class="card-item">
+                            <div class="card-label">ID Jenis</div>
+                            <div class="card-value">{{ $item->id }}</div>
+                        </div>
 
-					<!-- Alert -->
-					@if (session('success'))
-						<div class="alert alert-success alert-dismissible fade show" role="alert">
-							{{ session('success') }}
-							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-						</div>
-					@endif
+                        <div class="card-item">
+                            <div class="card-label">Deskripsi</div>
+                            <div class="card-value">{{ $item->deskripsi ?: 'Tidak ada deskripsi' }}</div>
+                        </div>
 
-					<!-- Table -->
-					<div class="card border-0 shadow">
-						<div class="card-body">
-							<div class="table-responsive">
-								<table class="table table-hover">
-									<thead class="thead-dark">
-										<tr>
-											<th>No</th>
-											<th>Nama Jenis</th>
-											<th>Deskripsi</th>
-											<th width="120">Aksi</th>
-										</tr>
-									</thead>
-									<tbody>
-										@foreach ($dataJenisDokumen as $item)
-											<tr>
-												<td>{{ $loop->iteration }}</td>
-												<td>{{ $item->nama_jenis }}</td>
-												<td>{{ $item->deskripsi ?? '-' }}</td>
-												<td>
-													<div class="btn-group" role="group">
-														<a href="{{ route('dokumen.edit', $item->jenis_id) }}"
-														   class="btn btn-warning btn-sm">
-															<i class="fas fa-edit"></i>
-														</a>
-														<form action="{{ route('dokumen.destroy', $item->jenis_id) }}"
-															  method="POST"
-															  onsubmit="return confirm('Hapus jenis dokumen ini?')">
-															@csrf
-															@method('DELETE')
-															<button type="submit" class="btn btn-danger btn-sm">
-																<i class="fas fa-trash"></i>
-															</button>
-														</form>
-													</div>
-												</td>
-											</tr>
-										@endforeach
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Content Section -->
+                        <div class="card-item">
+                            <div class="card-label">Dibuat</div>
+                            <div class="card-value">{{ $item->created_at ? $item->created_at->format('d M Y') : 'N/A' }}
+                            </div>
+                        </div>
 
-		<!-- Start Footer Section -->
-		@include('layouts.guest.footer')
-		<!-- End Footer Section -->
+                        <div class="card-divider"></div>
 
-		{{-- start js --}}
-		@include('layouts.guest.js')
-        {{-- end js --}}
-	</body>
-</html>
+                        <div class="card-actions">
+                            <a href="{{ route('dokumen.edit', $item->id) }}" class="btn-action btn-edit">
+                                <i class="fas fa-edit"></i>Edit
+                            </a>
+                            <form action="{{ route('dokumen.destroy', $item->id) }}" method="POST"
+                                onsubmit="return confirm('Hapus jenis dokumen ini?')" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-action btn-delete">
+                                    <i class="fas fa-trash"></i>Hapus
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-12">
+                    <div class="card-custom">
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open"></i>
+                            <h4>Belum ada jenis dokumen</h4>
+                            <p>Mulai dengan menambahkan jenis dokumen pertama</p>
+                            <a href="{{ route('dokumen.create') }}" class="btn btn-primary mt-3">
+                                <i class="fas fa-plus me-2"></i>Tambah Jenis Dokumen
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforelse
+        </div>
+
+        <div class="mt-3">
+            {{ $dataJenisDokumen->withQueryString()->links('pagination::bootstrap-5') }}
+        </div>
+    </div>
+@endsection

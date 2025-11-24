@@ -59,7 +59,7 @@
 					<!-- Form -->
 					<div class="card border-0 shadow">
 						<div class="card-body p-5">
-							<form action="{{ route('dokumen.update', $dataJenisDokumen->jenis_id) }}" method="POST">
+							<form action="{{ route('dokumen.update', $dataJenisDokumen->id) }}" method="POST">
 								@method('PUT')
 								@csrf
 								<div class="row">

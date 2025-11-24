@@ -22,7 +22,7 @@
     <!-- Main Konten -->
      @yield('content')
 
-   
+
 
     <!-- Start Footer Section -->
     @include('layouts.guest.footer')

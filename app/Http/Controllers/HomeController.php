@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use App\Models\JenisDokumen;
 
 
@@ -48,28 +47,6 @@ class HomeController extends Controller
         //
     }
 
-=======
 
-class HomeController extends Controller
-{
-    public function home()
-    {
-        return view('pages.home');
-    }
-
-    public function tentang()
-    {
-        return view('pages.tentang');
-    }
-
-    public function layanan()
-    {
-        return view('pages.layanan');
-    }
-
-    public function kontak()
-    {
-        return view('pages.kontak');
-    }
->>>>>>> cd0a0f617360b0c848b85d165f45fc1b579e9466
 }
+

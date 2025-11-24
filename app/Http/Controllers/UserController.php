@@ -10,9 +10,23 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['dataUser'] = User::all();
+        $filterableColumns = []; // Bisa ditambahkan jika ada filter lain nanti
+        $searchableColumns = ['name', 'email'];
+
+        $query = User::query()
+            ->filter($request, $filterableColumns)
+            ->search($request, $searchableColumns);
+
+        // Default sorting
+        $query->orderBy('created_at', 'desc');
+
+        $data = [
+            'dataUser' => $query->paginate(12)->withQueryString(),
+            'totalUsers' => User::count(),
+        ];
+
         return view('pages.guest.user.index', $data);
     }
 

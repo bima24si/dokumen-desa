@@ -1,23 +1,29 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
-class Warga extends Model
+class KategoriDokumen extends Model
 {
-    protected $table = 'warga';
-    protected $primaryKey = 'warga_id';
+    use HasFactory;
+
+    protected $table = 'kategori_dokumen';
+    protected $primaryKey = 'kategori_id';
+
     protected $fillable = [
-        'no_ktp',
         'nama',
-        'jenis_kelamin',
-        'agama',
-        'pekerjaan',
-        'telp',
-        'email',
+        'deskripsi'
     ];
+
+    /**
+     * Get the dokumen hukum for the kategori.
+     */
+    public function dokumenHukum()
+    {
+        return $this->hasMany(DokumenHukum::class, 'kategori_id', 'kategori_id');
+    }
 
     public function scopeFilter(Builder $query, $request, array $filterableColumns): Builder
     {

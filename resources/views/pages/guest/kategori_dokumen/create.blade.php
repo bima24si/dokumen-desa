@@ -1,3 +1,4 @@
+<!-- [file name]: create.blade.php -->
 <!-- /*
 * Bootstrap 5
 * Template Name: Furni
@@ -18,18 +19,15 @@
   <meta name="description" content="" />
   <meta name="keywords" content="bootstrap, bootstrap4" />
 
-
-		 {{-- start css --}}
+        {{-- start css --}}
         @include('layouts.guest.css')
         {{-- end css --}}
-		<title>Edit User</title>
-
+		<title>Tambah Kategori Dokumen</title>
 	</head>
 
 	<body>
 
 		<!-- Start Header/Navigation -->
-
 		@include('layouts.guest.navbar')
 		<!-- End Header/Navigation -->
 
@@ -41,21 +39,19 @@
 					<nav aria-label="breadcrumb" class="mb-4">
 						<ol class="breadcrumb">
 							<li class="breadcrumb-item"><a href="{{ route('home.index') }}"><i class="fas fa-home"></i></a></li>
-							<li class="breadcrumb-item"><a href="{{ route('user.index') }}">Users</a></li>
-							<li class="breadcrumb-item active">Edit User</li>
-
+							<li class="breadcrumb-item"><a href="{{ route('kategori-dokumen.index') }}">Kategori Dokumen</a></li>
+							<li class="breadcrumb-item active">Tambah Kategori</li>
 						</ol>
 					</nav>
 
 					<!-- Header -->
 					<div class="row mb-4">
 						<div class="col-md-6">
-							<h2 class="section-title">Edit User</h2>
-							<p>Form untuk mengubah data user</p>
+							<h2 class="section-title">Tambah Kategori Dokumen</h2>
+							<p>Form untuk menambahkan kategori dokumen baru</p>
 						</div>
 						<div class="col-md-6 text-end">
-							<a href="{{ route('user.index') }}" class="btn btn-secondary">
-
+							<a href="{{ route('kategori-dokumen.index') }}" class="btn btn-secondary">
 								<i class="fas fa-arrow-left me-2"></i>Kembali
 							</a>
 						</div>
@@ -64,55 +60,29 @@
 					<!-- Form -->
 					<div class="card border-0 shadow">
 						<div class="card-body p-5">
-
-							<form action="{{ route('user.update', $user->id) }}" method="POST">
-								@method('PUT')
+							<form action="{{ route('kategori-dokumen.store') }}" method="POST">
 								@csrf
 								<div class="row">
 									<div class="col-md-6">
 										<div class="mb-4">
-
-											<label for="name" class="form-label">Nama Lengkap</label>
-											<input type="text" class="form-control @error('name') is-invalid @enderror"
-												   id="name" name="name"
-												   value="{{ old('name', $user->name) }}"
-												   placeholder="Masukkan nama lengkap" required>
-											@error('name')
-												<div class="invalid-feedback">{{ $message }}</div>
-											@enderror
-										</div>
-
-										<div class="mb-4">
-											<label for="email" class="form-label">Email</label>
-											<input type="email" class="form-control @error('email') is-invalid @enderror"
-												   id="email" name="email"
-												   value="{{ old('email', $user->email) }}"
-												   placeholder="Masukkan email" required>
-											@error('email')
+											<label for="nama" class="form-label">Nama Kategori</label>
+											<input type="text" class="form-control @error('nama') is-invalid @enderror"
+												   id="nama" name="nama" value="{{ old('nama') }}"
+												   placeholder="Masukkan nama kategori" required>
+											@error('nama')
 												<div class="invalid-feedback">{{ $message }}</div>
 											@enderror
 										</div>
 									</div>
-
 									<div class="col-md-6">
 										<div class="mb-4">
-											<label for="password" class="form-label">Password</label>
-											<input type="password" class="form-control @error('password') is-invalid @enderror"
-												   id="password" name="password"
-												   placeholder="Masukkan password baru (kosongkan jika tidak diubah)">
-											@error('password')
+											<label for="deskripsi" class="form-label">Deskripsi</label>
+											<textarea class="form-control @error('deskripsi') is-invalid @enderror"
+													  id="deskripsi" name="deskripsi" rows="3"
+													  placeholder="Masukkan deskripsi kategori">{{ old('deskripsi') }}</textarea>
+											@error('deskripsi')
 												<div class="invalid-feedback">{{ $message }}</div>
 											@enderror
-											<small class="form-text text-muted">
-												Password minimal 3 karakter dan harus mengandung huruf kapital
-											</small>
-										</div>
-
-										<div class="mb-4">
-											<label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-											<input type="password" class="form-control"
-												   id="password_confirmation" name="password_confirmation"
-												   placeholder="Masukkan ulang password baru">
 										</div>
 									</div>
 								</div>
@@ -120,9 +90,9 @@
 								<div class="row mt-4">
 									<div class="col-12 text-center">
 										<button type="submit" class="btn btn-primary btn-lg">
-											<i class="fas fa-save me-2"></i> Simpan Perubahan
+											<i class="fas fa-save me-2"></i> Simpan Data
 										</button>
-										<a href="{{ route('user.index') }}" class="btn btn-outline-secondary btn-lg ms-2">
+										<a href="{{ route('kategori-dokumen.index') }}" class="btn btn-outline-secondary btn-lg ms-2">
 											<i class="fas fa-times me-2"></i> Batal
 										</a>
 									</div>
@@ -139,7 +109,7 @@
 		@include('layouts.guest.footer')
 		<!-- End Footer Section -->
 
-		{{-- start js --}}
+        {{-- start js --}}
 		@include('layouts.guest.js')
         {{-- end js --}}
 	</body>
