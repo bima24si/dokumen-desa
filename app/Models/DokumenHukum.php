@@ -4,10 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-<<<<<<< HEAD
 use Illuminate\Database\Eloquent\Builder;
-=======
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
 
 class DokumenHukum extends Model
 {
@@ -49,7 +46,6 @@ class DokumenHukum extends Model
     {
         return $this->morphMany(Media::class, 'model');
     }
-<<<<<<< HEAD
 
     /**
      * Scope untuk filter data
@@ -92,6 +88,4 @@ class DokumenHukum extends Model
             fn($q) => $q->where('tanggal', '<=', $endDate)
         );
     }
-=======
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
 }

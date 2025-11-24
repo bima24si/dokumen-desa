@@ -4,7 +4,7 @@
 @section('title', 'Dokumen Hukum')
 
 @section('content')
-<<<<<<< HEAD
+
     <!-- Page Header -->
     <div class="page-header">
         <div class="container">
@@ -289,5 +289,5 @@
         @endforelse
     </div>
 </div>
->>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
+
 @endsection
