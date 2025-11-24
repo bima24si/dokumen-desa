@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+<!-- [file name]: index.blade.php -->
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
 @extends('layouts.guest.app')
 
 @section('title', 'Kategori Dokumen')
@@ -38,6 +42,7 @@
         </div>
     @endif
 
+<<<<<<< HEAD
     <!-- Filter dan Search Form -->
     <div class="card mb-4">
         <div class="card-body">
@@ -165,18 +170,28 @@
         </div>
     </div>
 
+=======
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
     <!-- Cards Grid -->
     <div class="card-grid">
         @forelse ($dataKategoriDokumen as $item)
             <div class="card-custom">
                 <div class="card-header-custom">
                     <h5>{{ $item->nama }}</h5>
+<<<<<<< HEAD
                     <span class="badge bg-primary">{{ $item->dokumen_hukum_count }} Dokumen</span>
+=======
+                    <span class="badge bg-primary">{{ $item->dokumenHukum->count() }} Dokumen</span>
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
                 </div>
                 <div class="card-body-custom">
                     <div class="card-item">
                         <div class="card-label">ID Kategori</div>
+<<<<<<< HEAD
                         <div class="card-value">#{{ $item->kategori_id }}</div>
+=======
+                        <div class="card-value">{{ $item->kategori_id }}</div>
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
                     </div>
 
                     <div class="card-item">
@@ -186,7 +201,11 @@
 
                     <div class="card-item">
                         <div class="card-label">Dibuat</div>
+<<<<<<< HEAD
                         <div class="card-value">{{ $item->created_at ? $item->created_at->format('d M Y') : 'N/A' }}</div>
+=======
+                        <div class="card-value">{{ $item->created_at->format('d M Y') }}</div>
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
                     </div>
 
                     <div class="card-divider"></div>
@@ -202,9 +221,13 @@
                               onsubmit="return confirm('Hapus kategori dokumen ini?')" class="d-inline">
                             @csrf
                             @method('DELETE')
+<<<<<<< HEAD
                             <button type="submit" class="btn-action btn-delete"
                                     {{ $item->dokumen_hukum_count > 0 ? 'disabled' : '' }}
                                     title="{{ $item->dokumen_hukum_count > 0 ? 'Tidak dapat menghapus kategori yang memiliki dokumen' : '' }}">
+=======
+                            <button type="submit" class="btn-action btn-delete">
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
                                 <i class="fas fa-trash"></i>Hapus
                             </button>
                         </form>
@@ -217,6 +240,7 @@
                     <div class="empty-state">
                         <i class="fas fa-tags"></i>
                         <h4>Belum ada kategori dokumen</h4>
+<<<<<<< HEAD
                         <p>
                             @if(request()->hasAny(['search', 'sort']))
                                 Tidak ditemukan kategori dengan kriteria yang dicari
@@ -232,11 +256,18 @@
                                 <i class="fas fa-refresh me-2"></i>Tampilkan Semua Kategori
                             </a>
                         @endif
+=======
+                        <p>Mulai dengan menambahkan kategori dokumen pertama</p>
+                        <a href="{{ route('kategori-dokumen.create') }}" class="btn btn-primary mt-3">
+                            <i class="fas fa-plus me-2"></i>Tambah Kategori
+                        </a>
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
                     </div>
                 </div>
             </div>
         @endforelse
     </div>
+<<<<<<< HEAD
 
     <!-- Pagination -->
     <div class="mt-3">
@@ -277,4 +308,7 @@
     font-size: 0.9rem;
 }
 </style>
+=======
+</div>
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
 @endsection

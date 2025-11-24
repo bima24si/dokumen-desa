@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+<<<<<<< HEAD
 use Illuminate\Database\Eloquent\Builder;
+=======
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +16,7 @@ class JenisDokumen extends Model
     protected $table = 'jenis_dokumen';
     protected $fillable = ['nama_jenis', 'deskripsi'];
 
+<<<<<<< HEAD
     /**
      * Scope untuk filter data
      */
@@ -39,4 +43,8 @@ class JenisDokumen extends Model
             });
         }
     }
+=======
+    // ❌ HAPUS INI (biarkan default)
+    // protected $primaryKey = 'id';
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
 }

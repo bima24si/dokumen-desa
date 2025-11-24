@@ -11,6 +11,7 @@ class KategoriDokumenController extends Controller
     /**
      * Display a listing of the resource.
      */
+<<<<<<< HEAD
     public function index(Request $request)
     {
         $filterableColumns = []; // Bisa ditambahkan jika ada kolom untuk filter
@@ -22,6 +23,11 @@ class KategoriDokumenController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+=======
+    public function index()
+    {
+        $data['dataKategoriDokumen'] = KategoriDokumen::all();
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
         return view('pages.guest.kategori_dokumen.index', $data);
     }
 

@@ -374,6 +374,7 @@
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 </style>
+<<<<<<< HEAD
     
 
 
@@ -528,3 +529,7 @@
             }
         }
     </style>
+=======
+
+{{--  --}}
+>>>>>>> 1ef3240d53deee62a72bf7cb6cd04e48baa765ca
