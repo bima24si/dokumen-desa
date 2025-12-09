@@ -148,6 +148,7 @@
                             <div class="card-value">{{ $user->email }}</div>
                         </div>
 
+
                         <div class="card-item">
                             <div class="card-label">Dibuat</div>
                             <div class="card-value">{{ $user->created_at->format('d M Y') }}</div>

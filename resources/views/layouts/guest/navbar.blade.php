@@ -1,6 +1,6 @@
-<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
     <div class="container">
-        <a class="navbar-brand" href="index.html">DokdesKu<span>.</span></a>
+        <a class="navbar-brand" href="{{ route('home.index') }}">DokdesKu<span>.</span></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
             aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
@@ -8,119 +8,142 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarsFurni">
-            <!-- Menu Navigasi Utama -->
+
             <div class="navbar-nav mx-auto py-0 align-items-center">
-                <a href="{{ url('/home') }}"
-                    class="nav-item nav-link {{ request()->is('home.index') ? 'active' : '' }}">
+
+                {{-- Home index --}}
+                <a href="{{ route('home.index') }}"
+                    class="nav-item nav-link {{ request()->routeIs('home.index') ? 'active' : '' }}">
                     <i class="fas fa-home me-1"></i>Home
                 </a>
 
-                <a href="{{ url('/tentang') }}"
-                    class="nav-item nav-link {{ request()->is('tentang') ? 'active' : '' }}">
+                {{-- Tentang --}}
+                <a href="{{ route('tentang') }}"
+                    class="nav-item nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}">
                     <i class="fas fa-info-circle me-1"></i>Tentang
                 </a>
 
-
-                <a href="{{ route('dokumen.index') }}"
-                    class="nav-item nav-link {{ request()->is('dokumen.*') ? 'active' : '' }}">
-                    <i class="fas fa-users me-2"></i>Dokumen
+                {{-- Dokumen (Publik - Semua bisa lihat) --}}
+                <a href="{{ route('dokumen-hukum.index') }}"
+                    class="nav-item nav-link {{ request()->routeIs('dokumen-hukum.*') ? 'active' : '' }}">
+                    <i class="fas fa-book me-2"></i>Dokumen
                 </a>
 
+                {{-- Dropdown Layanan (Hanya Muncul Jika SUDAH LOGIN) --}}
+                @auth
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {{ request()->is('warga*', 'user*', 'kategori*', 'jenis*') ? 'active' : '' }}"
+                           href="#" id="layananDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-concierge-bell me-1"></i>Layanan
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="layananDropdown">
 
-                <!-- Dropdown Menu Layanan -->
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="layananDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-concierge-bell me-1"></i>Layanan
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="layananDropdown">
-                        <li>
-                            <a href="{{ route('warga.index') }}"
-                                class="dropdown-item {{ request()->is('warga.*') ? 'active' : '' }}">
-                                <i class="fas fa-users me-2"></i>Data Warga
-                            </a>
-                        </li>
+                            {{-- ========================================== --}}
+                            {{-- MENU KHUSUS ADMIN (AKSES SEMUA CRUD) --}}
+                            {{-- ========================================== --}}
+                            @if(Auth::user()->role == 'admin')
+                                {{-- 1. Kelola Warga --}}
+                                <li>
+                                    <a href="{{ route('warga.index') }}" class="dropdown-item">
+                                        <i class="fas fa-users me-2"></i>Kelola Data Warga
+                                    </a>
+                                </li>
+                                {{-- 2. Kelola User --}}
+                                <li>
+                                    <a href="{{ route('user.index') }}" class="dropdown-item">
+                                        <i class="fas fa-user-cog me-2"></i>Kelola Data User
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                {{-- 3. Kelola Dokumen Hukum --}}
+                                <li>
+                                    <a href="{{ route('dokumen-hukum.index') }}" class="dropdown-item">
+                                        <i class="fas fa-file-contract me-2"></i>Kelola Dokumen Hukum
+                                    </a>
+                                </li>
+                                {{-- 4. Kelola Kategori Dokumen --}}
+                                <li>
+                                    <a href="{{ route('kategori-dokumen.index') }}" class="dropdown-item">
+                                        <i class="fas fa-tags me-2"></i>Kategori Dokumen
+                                    </a>
+                                </li>
+                                {{-- 5. Kelola Jenis Dokumen --}}
+                                <li>
+                                    <a href="{{ route('jenis-dokumen.index') }}" class="dropdown-item">
+                                        <i class="fas fa-file-alt me-2"></i>Jenis Dokumen
+                                    </a>
+                                </li>
+                            @endif
 
-                        <li>
-                            <a href="{{ route('user.index') }}"
-                                class="dropdown-item {{ request()->is('user.*') ? 'active' : '' }}">
-                                <i class="fas fa-user-cog me-2"></i>Data User
-                            </a>
-                        </li>
+                            {{-- ========================================== --}}
+                            {{-- MENU KHUSUS WARGA --}}
+                            {{-- ========================================== --}}
+                            @if(Auth::user()->role == 'warga')
+                                <li>
+                                    <a href="{{ route('warga.index') }}" class="dropdown-item">
+                                        <i class="fas fa-user me-2"></i>Data Warga Saya
+                                    </a>
+                                </li>
+                            @endif
 
-                             <li>
-                            <a href="{{ route('kategori-dokumen.index') }}"
-                                class="dropdown-item {{ request()->is('kategori-dokumen*') ? 'active' : '' }}">
-                                <i class="fas fa-tags me-2"></i>Kategori Dokumen
-                            </a>
-                        </li>
+                            {{-- ========================================== --}}
+                            {{-- MENU KHUSUS USER --}}
+                            {{-- ========================================== --}}
+                            @if(Auth::user()->role == 'user')
+                                <li>
+                                    <a href="{{ route('user.index') }}" class="dropdown-item">
+                                        <i class="fas fa-user-cog me-2"></i>Data User Saya
+                                    </a>
+                                </li>
+                            @endif
 
-                        <li>
-                            <a href="{{ route('dokumen-hukum.index') }}"
-                                class="dropdown-item {{ request()->is('dokumen-hukum*') ? 'active' : '' }}">
-                                <i class="fas fa-file-contract me-2"></i>Dokumen Hukum
-                            </a>
-                        </li>
-
-
-
-                        {{-- <li>
-                            <a href="{{ route('lembaga.index') }}"
-                                class="dropdown-item {{ request()->is('lembaga*') ? 'active' : '' }}">
-                                <i class="fas fa-user-cog me-2"></i>Data Lembaga Desa
-                            </a>
-
-                        </li>
-
-                        <li>
-                        <li>
-                            <a href="{{ route('jabatan-lembaga.index') }}"
-                                class="dropdown-item {{ request()->is('jabatan-lembaga*') ? 'active' : '' }}">
-                                <i class="fas fa-user-tie me-2"></i>Data Jabatan Lembaga
-                            </a>
-                        </li>
-                        </li> --}}
-                    </ul>
-                </div>
-
-
-                <a href="#" class="nav-item nav-link {{ request()->is('kontak') ? 'active' : '' }}">
-                    <i class="fas fa-address-book me-1"></i>Kontak
-                </a>
+                        </ul>
+                    </div>
+                @endauth
             </div>
 
-            </ul>
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                <div class="nav-item dropdown">
-                    <div class="user-icon dropdown-toggle align-items-center" id="profileDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user me-2"></i>
-                        <span class="user-name">Guest</span>
+
+                @auth
+                    {{-- JIKA SUDAH LOGIN --}}
+                    <div class="nav-item dropdown">
+                        <div class="user-icon dropdown-toggle align-items-center" id="profileDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer; color: white;">
+                            <i class="fas fa-user me-2"></i>
+                            <span class="user-name">{{ Auth::user()->name }}</span>
+                        </div>
+                        <ul class="dropdown-menu user-dropdown dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user-circle me-2"></i>Profil Saya
+                                </a>
+                            </li>
+                            {{-- Menampilkan Role --}}
+                            <li>
+                                <span class="dropdown-item-text text-muted" style="font-size: 0.8rem;">
+                                    Role: <strong>{{ ucfirst(Auth::user()->role) }}</strong>
+                                </span>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                {{-- Link Logout --}}
+                                <a class="dropdown-item text-danger" href="{{ route('logout') }}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Keluar
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                    <ul class="dropdown-menu user-dropdown dropdown-menu-end" aria-labelledby="profileDropdown">
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user-circle me-2"></i>Profil Saya
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cog me-2"></i>Pengaturan
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('logout') }}">
-                                <i class="fas fa-sign-out-alt me-2"></i>Keluar
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                @else
+                    {{-- JIKA BELUM LOGIN (GUEST) --}}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary px-4 text-white" href="{{ route('login-form') }}"
+                           style="background-color: #3b5d50; border-radius: 20px;">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                        </a>
+                    </li>
+                @endauth
+
             </ul>
         </div>
-
-
     </div>
 </nav>

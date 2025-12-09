@@ -31,9 +31,9 @@ class RegisterController extends Controller
                 'required',
                 'string',
                 'min:8',
-                'confirmed',
-                'regex:/[A-Z]/',
-                'regex:/[0-9]/'
+                'confirmed',     // Memeriksa input 'password_confirmation'
+                'regex:/[A-Z]/', // Harus ada huruf besar
+                'regex:/[0-9]/'  // Harus ada angka
             ],
         ], [
             'name.required' => 'Nama lengkap wajib diisi.',
@@ -58,6 +58,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user', // <--- PENTING: Set default role sebagai 'user'
         ]);
 
         return redirect()->route('login-form')

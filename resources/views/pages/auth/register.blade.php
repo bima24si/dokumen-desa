@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">    
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -197,6 +197,16 @@
                        value="{{ old('email') }}"
                        placeholder="Masukkan email" required>
             </div>
+
+            <!-- role -->
+<div class="mb-3">
+    <label class="form-label">Role Pengguna</label>
+    <select name="role" class="form-control">
+        <option value="User">User (Akses Terbatas)</option>
+        <option value="Warga">Warga (Akses Desa)</option>
+        <option value="Admin">Admin (Akses Penuh)</option>
+    </select>
+</div>
 
             <div class="form-group">
                 <label for="password">Password:</label>

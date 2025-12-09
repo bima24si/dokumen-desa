@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
+use App\Models\DokumenHukum;
 
 class DokumenHukumSeeder extends Seeder
 {
@@ -22,6 +23,8 @@ class DokumenHukumSeeder extends Seeder
         }
 
         for ($i = 1; $i <= 30; $i++) {
+            $fileType = $faker->randomElement(['utama', 'lampiran']);
+
             DB::table('dokumen_hukum')->insert([
                 'jenis_id' => $faker->randomElement($jenisIds),
                 'kategori_id' => $faker->randomElement($kategoriIds),
@@ -30,6 +33,8 @@ class DokumenHukumSeeder extends Seeder
                 'tanggal' => $faker->date('Y-m-d'),
                 'ringkasan' => $faker->paragraph(3),
                 'status' => $faker->randomElement(['aktif', 'tidak_aktif']),
+                'file_number' => DokumenHukum::generateFileNumber($fileType),
+                'file_type' => $fileType,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

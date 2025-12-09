@@ -90,6 +90,15 @@
                                     </div>
                                 </div>
 
+                                <div class="mb-3">
+    <label class="form-label">Role Pengguna</label>
+    <select name="role" class="form-control">
+        <option value="User">User (Akses Terbatas)</option>
+        <option value="Warga">Warga (Akses Desa)</option>
+        <option value="Admin">Admin (Akses Penuh)</option>
+    </select>
+</div>
+
                                 <div class="col-md-6">
                                     <div class="mb-4">
                                         <label for="password" class="form-label">Password</label>

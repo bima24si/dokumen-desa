@@ -47,13 +47,16 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+            'role' => 'required|in:admin,warga,user', // <-- TAMBAHKAN VALIDASI ROLE
         ]);
 
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    'name' => $request->name,
+    'email' => $request->email,
+    'username' => $request->username,
+    'password' => Hash::make($request->password),
+    'role' => $request->role, // Tambahkan baris ini
+]);
 
         return redirect()->route('user.index')->with('success', 'Penambahan Data User Berhasil!');
     }
@@ -86,23 +89,27 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
+            'role' => 'required|in:admin,warga,user',
         ]);
 
         // Update data user
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $dataToUpdate = [
+    'name' => $request->name,
+    'email' => $request->email,
+    'username' => $request->username,
+    'role' => $request->role, // Tambahkan baris ini
+];
 
         // Update password hanya jika diisi
         if ($request->filled('password')) {
-            $request->validate([
-                'password' => 'min:6|confirmed',
-            ]);
-            $user->password = Hash::make($request->password);
+            $validatedData['password'] = Hash::make($request->password);
+        } else {
+            unset($validatedData['password']);
         }
 
-        $user->save();
+        $user->update($validatedData); // Update data, termasuk role
 
-        return redirect()->route('user.index')->with('success', 'Perubahan Data User Berhasil!');
+        return redirect()->route('user.index')->with('success', 'User berhasil diubah.');
     }
 
     /**

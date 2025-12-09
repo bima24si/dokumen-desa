@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id('dokumen_id'); // Primary key auto increment
             $table->unsignedBigInteger('jenis_id');
             $table->unsignedBigInteger('kategori_id');
-            $table->string('nomor')->unique();
+            $table->string('nomor')->unique(); // Nomor dokumen (sudah ada)
             $table->string('judul');
             $table->date('tanggal');
             $table->text('ringkasan')->nullable();
             $table->enum('status', ['aktif', 'tidak_aktif'])->default('aktif');
+            $table->string('file_number')->unique()->nullable(); // Nomor unik untuk file/lampiran
+            $table->enum('file_type', ['utama', 'lampiran'])->nullable(); // Jenis file
             $table->timestamps();
 
             // Foreign key constraints

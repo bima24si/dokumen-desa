@@ -16,6 +16,61 @@
     @include('layouts.guest.css')
     {{-- end css --}}
     <title>Edit Dokumen Hukum</title>
+    <style>
+        .file-info {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .current-file {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .file-badge {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .badge-utama {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .badge-lampiran {
+            background-color: #6c757d;
+            color: white;
+        }
+        .attachment-container {
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+        }
+        .attachment-item {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .existing-attachment {
+            background-color: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -49,12 +104,94 @@
                     </div>
                 </div>
 
+                <!-- File Information -->
+                <div class="card border-primary mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-info-circle me-2"></i>Informasi File
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Nomor File:</strong> {{ $dataDokumenHukum->file_number }}</p>
+                                <p><strong>Tipe File:</strong>
+                                    <span class="badge file-badge badge-{{ $dataDokumenHukum->file_type }}">
+                                        {{ ucfirst($dataDokumenHukum->file_type) }}
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                @if($dataDokumenHukum->mainFile)
+                                    <p><strong>File Saat Ini:</strong></p>
+                                    <div class="current-file">
+                                        <div>
+                                            <i class="fas fa-file me-2"></i>
+                                            {{ $dataDokumenHukum->mainFile->name }}
+                                        </div>
+                                        <a href="{{ route('dokumen-hukum.download', $dataDokumenHukum->file_number) }}"
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-download"></i> Download
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Existing Attachments -->
+                        @if($dataDokumenHukum->file_type === 'utama' && $dataDokumenHukum->attachments->count() > 0)
+                            <div class="mt-3">
+                                <p><strong>Lampiran Saat Ini:</strong></p>
+                                @foreach($dataDokumenHukum->attachments as $attachment)
+                                    <div class="existing-attachment">
+                                        <i class="fas fa-paperclip me-2"></i>
+                                        {{ $attachment->name }}
+                                        <a href="{{ route('dokumen-hukum.download', $dataDokumenHukum->file_number) }}?attachment_id={{ $attachment->id }}"
+                                           class="btn btn-sm btn-outline-secondary float-end">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
                 <!-- Form -->
                 <div class="card border-0 shadow">
                     <div class="card-body p-5">
-                        <form action="{{ route('dokumen-hukum.update', $dataDokumenHukum->dokumen_id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('dokumen-hukum.update', $dataDokumenHukum->dokumen_id) }}" method="POST" enctype="multipart/form-data" id="dokumenForm">
                             @method('PUT')
                             @csrf
+
+                            <!-- File Type & File Number -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-4">
+                                        <label for="file_type" class="form-label">Tipe Dokumen</label>
+                                        <select class="form-control @error('file_type') is-invalid @enderror"
+                                                id="file_type" name="file_type" required onchange="toggleAttachments()">
+                                            <option value="">Pilih Tipe Dokumen</option>
+                                            <option value="utama" {{ old('file_type', $dataDokumenHukum->file_type) == 'utama' ? 'selected' : '' }}>File Utama</option>
+                                            <option value="lampiran" {{ old('file_type', $dataDokumenHukum->file_type) == 'lampiran' ? 'selected' : '' }}>Lampiran</option>
+                                        </select>
+                                        @error('file_type')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-4">
+                                        <label for="file_number" class="form-label">Nomor File</label>
+                                        <input type="text" class="form-control @error('file_number') is-invalid @enderror"
+                                               id="file_number" name="file_number" value="{{ old('file_number', $dataDokumenHukum->file_number) }}"
+                                               placeholder="Masukkan nomor file" required>
+                                        @error('file_number')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Basic Information -->
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-4">
@@ -157,16 +294,40 @@
                                 </div>
                             </div>
 
+                            <!-- Main File Upload -->
                             <div class="row">
                                 <div class="col-12">
                                     <div class="mb-4">
-                                        <label for="file" class="form-label">File Dokumen</label>
+                                        <label for="file" class="form-label">Ganti File Dokumen</label>
                                         <input type="file" class="form-control @error('file') is-invalid @enderror"
-                                               id="file" name="file" accept=".pdf,.doc,.docx">
-                                        <small class="form-text text-muted">Format: PDF, DOC, DOCX (Maks: 2MB)</small>
+                                               id="file" name="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
+                                        <small class="form-text text-muted">
+                                            Kosongkan jika tidak ingin mengganti file.
+                                            Format: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX (Maks: 5MB)
+                                        </small>
                                         @error('file')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Attachments (Only for Main File) -->
+                            <div class="row" id="attachmentsSection" style="display: {{ $dataDokumenHukum->file_type === 'utama' ? 'block' : 'none' }};">
+                                <div class="col-12">
+                                    <div class="mb-4">
+                                        <label class="form-label">Tambah Lampiran Baru (Opsional)</label>
+                                        <div class="attachment-container">
+                                            <div id="attachmentList">
+                                                <!-- New attachments will be added here dynamically -->
+                                            </div>
+                                            <button type="button" class="btn btn-outline-primary btn-sm btn-add-attachment" onclick="addAttachment()">
+                                                <i class="fas fa-plus me-1"></i>Tambah Lampiran
+                                            </button>
+                                            <small class="form-text text-muted d-block mt-2">
+                                                Format: PDF, DOC, DOCX, JPG, JPEG, PNG (Maks: 2MB per file)
+                                            </small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -196,5 +357,65 @@
     {{-- start js --}}
     @include('layouts.guest.js')
     {{-- end js --}}
+
+    <script>
+        let attachmentCounter = 0;
+
+        function toggleAttachments() {
+            const fileType = document.getElementById('file_type').value;
+            const attachmentsSection = document.getElementById('attachmentsSection');
+
+            if (fileType === 'utama') {
+                attachmentsSection.style.display = 'block';
+            } else {
+                attachmentsSection.style.display = 'none';
+                // Clear attachments if switching to lampiran
+                document.getElementById('attachmentList').innerHTML = '';
+                attachmentCounter = 0;
+            }
+        }
+
+        function addAttachment() {
+            attachmentCounter++;
+            const attachmentList = document.getElementById('attachmentList');
+            const attachmentItem = document.createElement('div');
+            attachmentItem.className = 'attachment-item';
+            attachmentItem.id = `attachment-${attachmentCounter}`;
+
+            attachmentItem.innerHTML = `
+                <div>
+                    <i class="fas fa-paperclip me-2"></i>
+                    Lampiran Baru ${attachmentCounter}
+                </div>
+                <div>
+                    <input type="file" name="attachments[]" class="form-control form-control-sm d-inline-block w-auto me-2"
+                           accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeAttachment(${attachmentCounter})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+
+            attachmentList.appendChild(attachmentItem);
+        }
+
+        function removeAttachment(id) {
+            const attachmentElement = document.getElementById(`attachment-${id}`);
+            if (attachmentElement) {
+                attachmentElement.remove();
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add some styling for badges
+            const style = document.createElement('style');
+            style.textContent = `
+                .badge-utama { background-color: #0d6efd !important; }
+                .badge-lampiran { background-color: #6c757d !important; }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
 </body>
 </html>

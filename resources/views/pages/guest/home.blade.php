@@ -36,7 +36,7 @@
                         <img src="https://www.masterplandesa.com/wp-content/uploads/2025/06/Pedesaan.jpg"
                              class="img-fluid rounded-3 shadow"
                              alt="Desa Digital"
-                             style="max-height: 400px; width: 100%; object-fit: cover;">
+                             style="max-height: 500px; width: 125%; object-fit: cover;">
                     </div>
                 </div>
             </div>
