@@ -7,43 +7,32 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule; // <--- WAJIB IMPORT INI
 
 class RegisterController extends Controller
 {
-    /**
-     * Menampilkan halaman registrasi
-     */
     public function index()
     {
         return view('pages.auth.register');
     }
 
-    /**
-     * Memproses data registrasi
-     */
     public function store(Request $request)
     {
-        // Validasi data input
+        // 1. Validasi
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255', 'min:3'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => [
-                'required',
-                'string',
-                'min:8',
-                'confirmed',     // Memeriksa input 'password_confirmation'
-                'regex:/[A-Z]/', // Harus ada huruf besar
-                'regex:/[0-9]/'  // Harus ada angka
+                'required', 'string', 'min:3', 'confirmed',
+                'regex:/[A-Z]/',
+                'regex:/[0-3]/'
             ],
+            // 2. Validasi Role (Sesuai dengan value di View: huruf kecil)
+            'role' => ['required', 'string', Rule::in(['admin', 'user', 'warga'])],
         ], [
-            'name.required' => 'Nama lengkap wajib diisi.',
-            'name.min' => 'Nama minimal harus 3 karakter.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'email.unique' => 'Email sudah terdaftar.',
-            'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password minimal harus 8 karakter.',
-            'password.confirmed' => 'Konfirmasi password tidak sesuai.',
+            'name.required' => 'Nama wajib diisi.',
+            'role.required' => 'Wajib memilih role pengguna.',
+            'role.in' => 'Pilihan role tidak valid (Pilih: User, Warga, atau Admin).', // Pesan error kustom
             'password.regex' => 'Password harus mengandung huruf kapital dan angka.',
         ]);
 
@@ -53,15 +42,15 @@ class RegisterController extends Controller
                 ->withInput();
         }
 
-        // Membuat user baru
+        // 3. Simpan User
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // <--- PENTING: Set default role sebagai 'user'
+            'role' => $request->role, // <--- PERBAIKAN UTAMA: Ambil dari request, JANGAN ditulis 'user'
         ]);
 
         return redirect()->route('login-form')
-            ->with('success', 'Registrasi berhasil! Silakan login dengan akun Anda.');
+            ->with('success', 'Registrasi berhasil! Silakan login.');
     }
 }

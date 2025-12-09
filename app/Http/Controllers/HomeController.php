@@ -3,24 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\JenisDokumen;
-use Illuminate\Support\Facades\Auth;
+use App\Models\JenisDokumen; // PENTING: Import Model ini
 
 class HomeController extends Controller
 {
     /**
-     * Display the home page.
+     * Menampilkan halaman utama (Home)
      */
     public function index()
     {
-        // Cek apakah user sudah login sesuai modul
-        if(!Auth::check()){
-            return redirect()->route('auth.index');
-        }
+        // Masalah Anda sebelumnya: Variabel ini tidak didefinisikan.
+        // Solusi: Ambil data dari database.
+        $dataJenisDokumen = JenisDokumen::all();
 
-        $data['dataJenisDokumen'] = JenisDokumen::all();
-        return view('pages.guest.home', $data);
+        // Kirim variabel ke view menggunakan compact
+        return view('pages.guest.home', compact('dataJenisDokumen'));
     }
 
-    // ... other methods tetap sama
+    /**
+     * Menampilkan halaman Tentang
+     * Masalah Anda sebelumnya: Fungsi ini TIDAK ADA.
+     * Solusi: Tambahkan fungsi ini.
+     */
+    public function tentang()
+    {
+        return view('pages.guest.tentang');
+    }
 }

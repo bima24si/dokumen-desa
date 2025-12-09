@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Registrasi</title>
+    <title>Halaman Registrasi - DokdesKu</title>
     <style>
+        /* Reset CSS Sederhana */
         * {
             margin: 0;
             padding: 0;
@@ -23,11 +24,11 @@
 
         .register-container {
             background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 450px;
+            max-width: 500px; /* Membatasi lebar agar tidak melebar kemana-mana */
         }
 
         .register-header {
@@ -37,101 +38,121 @@
 
         .register-header h1 {
             color: #333;
+            font-size: 1.8rem;
             margin-bottom: 0.5rem;
         }
 
         .register-header p {
             color: #666;
+            font-size: 0.95rem;
         }
 
+        /* Styling Form */
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem; /* Jarak antar input */
         }
 
         label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 500;
+            color: #444;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
 
         input[type="text"],
         input[type="email"],
-        input[type="password"] {
+        input[type="password"],
+        select {
             width: 100%;
             padding: 0.75rem;
             border: 2px solid #e1e5e9;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            background-color: #f9fafb;
         }
 
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="password"]:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #667eea;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
+        /* Tombol */
         .btn-register {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.9rem;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s;
-
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 1rem;
         }
 
         .btn-register:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
         }
 
+        /* Alert & Error Messages */
         .alert {
             padding: 0.75rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
         }
 
         .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
         }
 
         .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .text-danger {
+            color: #dc2626;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: block;
         }
 
         .form-info {
-            background-color: #e7f3ff;
-            padding: 0.75rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: #0066cc;
+            background-color: #eff6ff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
         }
 
         .form-info ul {
-            margin-left: 1rem;
+            margin-left: 1.2rem;
+            margin-top: 0.5rem;
         }
 
         .login-link {
             text-align: center;
             margin-top: 1.5rem;
             color: #666;
+            font-size: 0.9rem;
         }
 
         .login-link a {
             color: #667eea;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .login-link a:hover {
@@ -140,29 +161,30 @@
     </style>
 </head>
 <body>
+
     <div class="register-container">
         <div class="register-header">
             <h1>👤 Daftar Akun Baru</h1>
-            <p>Silakan buat akun baru Anda</p>
+            <p>Silakan lengkapi data diri Anda</p>
         </div>
 
-        <!-- Informasi ketentuan registrasi -->
         <div class="form-info">
             <strong>Ketentuan Registrasi:</strong>
             <ul>
-                <li>Semua kolom wajib diisi</li>
                 <li>Nama minimal 3 karakter</li>
-                <li>Email harus valid dan unik</li>
-                <li>Password minimal 8 karakter</li>
-                <li>Password harus mengandung huruf kapital dan angka</li>
-                <li>Konfirmasi password harus sama dengan password</li>
+                <li>Password wajib mengandung huruf besar & angka</li>
             </ul>
         </div>
 
-        <!-- Menampilkan error validasi -->
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         @if ($errors->any())
             <div class="alert alert-danger">
-                <ul style="margin-bottom: 0;">
+                <ul style="margin-bottom: 0; padding-left: 1rem;">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -170,63 +192,64 @@
             </div>
         @endif
 
-        <!-- Menampilkan pesan sukses -->
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <form method="POST" action="{{ route('register.store') }}">
-
             @csrf
 
             <div class="form-group">
                 <label for="name">Nama Lengkap:</label>
-
                 <input type="text" id="name" name="name"
                        value="{{ old('name') }}"
                        placeholder="Masukkan nama lengkap" required>
-
+                @error('name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-
                 <input type="email" id="email" name="email"
                        value="{{ old('email') }}"
-                       placeholder="Masukkan email" required>
+                       placeholder="Masukkan email aktif" required>
+                @error('email')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
-            <!-- role -->
-<div class="mb-3">
-    <label class="form-label">Role Pengguna</label>
-    <select name="role" class="form-control">
-        <option value="User">User (Akses Terbatas)</option>
-        <option value="Warga">Warga (Akses Desa)</option>
-        <option value="Admin">Admin (Akses Penuh)</option>
-    </select>
-</div>
+            <div class="form-group">
+                <label for="role">Role Pengguna:</label>
+                <select name="role" id="role" required>
+                    <option value="" disabled selected>Pilih Role...</option>
+                    <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User (Akses Terbatas)</option>
+                    <option value="warga" {{ old('role') == 'warga' ? 'selected' : '' }}>Warga (Akses Desa)</option>
+                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin (Akses Penuh)</option>
+                </select>
+                @error('role')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
 
             <div class="form-group">
                 <label for="password">Password:</label>
-
                 <input type="password" id="password" name="password"
-                       placeholder="Masukkan password" required>
+                       placeholder="Minimal 3 karakter, huruf besar & angka" required>
+                @error('password')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="password_confirmation">Konfirmasi Password:</label>
                 <input type="password" id="password_confirmation" name="password_confirmation"
-                       placeholder="Masukkan ulang password" required>
+                       placeholder="Ketik ulang password" required>
             </div>
 
-            <button type="submit" class="btn-register">Daftar</button>
+            <button type="submit" class="btn-register">Daftar Sekarang</button>
         </form>
 
         <div class="login-link">
-            Sudah punya akun? <a href="{{ route('auth.index') }}">Masuk di sini</a>
+            Sudah punya akun? <a href="{{ route('login-form') }}">Masuk di sini</a>
         </div>
     </div>
+
 </body>
 </html>

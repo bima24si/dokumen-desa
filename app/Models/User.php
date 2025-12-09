@@ -1,20 +1,24 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
+    /**
+     * Atribut yang bisa diisi secara massal (Mass Assignment).
+     */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'user',
-        'role', // Tambahkan ini
+        'role', // Pastikan ini ada agar role bisa disimpan
     ];
 
     protected $hidden = [
