@@ -93,11 +93,14 @@ class DokumenHukumController extends Controller
             'attachments.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048'
         ]);
 
+<<<<<<< HEAD
         // Generate file_number jika tidak diisi
         if (empty($validatedData['file_number'])) {
             $validatedData['file_number'] = DokumenHukum::generateFileNumber($validatedData['file_type']);
         }
 
+=======
+>>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
         $dokumenHukum = DokumenHukum::create($validatedData);
 
         // Handle main file upload
@@ -131,7 +134,11 @@ class DokumenHukumController extends Controller
         }
 
         return redirect()->route('dokumen-hukum.index')
+<<<<<<< HEAD
             ->with('success', 'Dokumen hukum berhasil ditambahkan dengan nomor file: ' . $validatedData['file_number']);
+=======
+            ->with('success', 'Dokumen hukum berhasil ditambahkan!');
+>>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
     }
 
     /**
@@ -139,7 +146,11 @@ class DokumenHukumController extends Controller
      */
     public function show(string $id)
     {
+<<<<<<< HEAD
         $dataDokumenHukum = DokumenHukum::with(['jenisDokumen', 'kategoriDokumen', 'mainFile', 'attachments'])
+=======
+        $dataDokumenHukum = DokumenHukum::with(['jenisDokumen', 'kategoriDokumen'])
+>>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
             ->findOrFail($id);
 
         return view('pages.guest.dokumen_hukum.show', [
@@ -152,8 +163,11 @@ class DokumenHukumController extends Controller
      */
     public function edit(string $id)
     {
+<<<<<<< HEAD
         $dataDokumenHukum = DokumenHukum::with(['mainFile', 'attachments'])->findOrFail($id);
 
+=======
+>>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
         $data = [
             'dataDokumenHukum' => $dataDokumenHukum,
             'dataJenisDokumen' => JenisDokumen::all(),
@@ -184,6 +198,7 @@ class DokumenHukumController extends Controller
             'attachments.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048'
         ]);
 
+<<<<<<< HEAD
         // Jika file_number berubah, update semua media terkait
         if ($dokumenHukum->file_number !== $validatedData['file_number']) {
             // Update custom properties di media
@@ -193,6 +208,8 @@ class DokumenHukumController extends Controller
             }
         }
 
+=======
+>>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
         $dokumenHukum->update($validatedData);
 
         // Handle main file upload jika ada
@@ -253,6 +270,7 @@ class DokumenHukumController extends Controller
         return redirect()->route('dokumen-hukum.index')
             ->with('success', 'Dokumen hukum berhasil dihapus!');
     }
+<<<<<<< HEAD
 
     /**
      * Download file by file_number
@@ -292,4 +310,6 @@ class DokumenHukumController extends Controller
             'dataDokumenHukum' => $dokumenHukum
         ]);
     }
+=======
+>>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
 }

@@ -1,14 +1,21 @@
 <?php
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+<<<<<<< HEAD
 
 use Illuminate\Database\Eloquent\Builder;
 
 
+=======
+use Illuminate\Database\Eloquent\Builder;
+>>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
 
 class KategoriDokumen extends Model
 {
@@ -29,7 +36,10 @@ class KategoriDokumen extends Model
     {
         return $this->hasMany(DokumenHukum::class, 'kategori_id', 'kategori_id');
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
 
     public function scopeFilter(Builder $query, $request, array $filterableColumns): Builder
     {
@@ -51,6 +61,9 @@ class KategoriDokumen extends Model
             });
         }
     }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
 }

@@ -15,7 +15,6 @@ class JenisDokumen extends Model
     protected $table = 'jenis_dokumen';
     protected $fillable = ['nama_jenis', 'deskripsi'];
 
-
     /**
      * Scope untuk filter data
      */
