@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
-// 1. Import Class Penting dari Spatie
+
+// Import Class Spatie
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-// 2. Tambahkan "implements HasMedia"
 class DokumenHukum extends Model implements HasMedia
 {
-    // 3. Tambahkan Trait "InteractsWithMedia"
+    // Gunakan Trait ini agar fungsi addMedia() bisa dikenali
     use HasFactory, InteractsWithMedia;
 
     protected $table = 'dokumen_hukum';
@@ -105,26 +105,21 @@ class DokumenHukum extends Model implements HasMedia
         return $this->belongsTo(KategoriDokumen::class, 'kategori_id', 'kategori_id');
     }
 
-    // CATATAN PENTING:
-    // Fungsi public function media() SAYA HAPUS.
-    // Karena Trait "InteractsWithMedia" sudah menyediakannya secara otomatis.
-    // Jika tidak dihapus, akan terjadi error konflik/tabrakan.
-
     /**
-     * Relasi helper untuk mengambil file utama (menggunakan class Media dari Spatie)
+     * Helper untuk mengambil file utama
      */
     public function mainFile()
     {
-        return $this->morphOne(Media::class, 'model')
+        return $this->morphOne(config('media-library.media_model', Media::class), 'model')
             ->where('collection_name', 'dokumen_utama');
     }
 
     /**
-     * Relasi helper untuk mengambil lampiran
+     * Helper untuk mengambil lampiran
      */
     public function attachments()
     {
-        return $this->morphMany(Media::class, 'model')
+        return $this->morphMany(config('media-library.media_model', Media::class), 'model')
             ->where('collection_name', 'dokumen_lampiran');
     }
 }

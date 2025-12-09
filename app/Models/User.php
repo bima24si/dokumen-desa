@@ -19,11 +19,19 @@ class User extends Authenticatable
         'email',
         'password',
         'role', // Pastikan ini ada agar role bisa disimpan
+        'last_login_at', // <--- Tambahkan ini
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'last_login_at' => 'datetime', // <--- Tambahkan ini agar bisa pakai diffForHumans()
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+
     ];
 
     /**

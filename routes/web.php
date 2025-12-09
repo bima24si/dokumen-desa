@@ -33,6 +33,8 @@ Route::resource('dokumen-hukum', DokumenHukumController::class);
 // Tambahkan di routes/web.php
 Route::resource('kategori-dokumen', KategoriDokumenController::class);
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes (Akses Tanpa Login / Guest)
@@ -100,6 +102,13 @@ Route::middleware(['checkislogin'])->group(function () {
     Route::middleware(['checkrole:user'])->group(function () {
         Route::resource('user', UserController::class);
     });
+
+    Route::middleware(['auth'])->group(function () {
+    // Route untuk halaman profil
+    Route::get('/profil', [AuthController::class, 'profile'])->name('profile');
+
+    // ... route lain yang butuh login
+});
 
 });
 

@@ -4,10 +4,6 @@
 @section('title', 'Dokumen Hukum')
 
 @section('content')
-<<<<<<< HEAD
-
-=======
->>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
     <!-- Page Header -->
     <div class="page-header">
         <div class="container">
@@ -262,7 +258,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
     <style>
         .stat-card {
             background: white;
@@ -306,6 +301,4 @@
         }
     </style>
 
-=======
->>>>>>> 5e34c6d034decb4a938d3b0ed9310ed366b93252
 @endsection
