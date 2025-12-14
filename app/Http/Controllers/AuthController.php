@@ -56,3 +56,5 @@ class AuthController extends Controller
         return view('pages.guest.profile', compact('user'));
     }
 }
+
+
