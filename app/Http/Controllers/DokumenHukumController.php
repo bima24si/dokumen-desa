@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\DokumenHukum;
@@ -7,7 +6,8 @@ use App\Models\JenisDokumen;
 use App\Models\KategoriDokumen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str; // <--- WAJIB ADA
+use Illuminate\Support\Str;
+// <--- WAJIB ADA
 
 class DokumenHukumController extends Controller
 {
@@ -21,35 +21,35 @@ class DokumenHukumController extends Controller
             ->search($request, $searchableColumns)
             ->dateRange($request->start_date, $request->end_date);
 
-        $sortOrder = match($request->sort) {
-            'judul_asc' => ['judul', 'asc'],
-            'judul_desc' => ['judul', 'desc'],
-            'tanggal_terbaru' => ['tanggal', 'desc'],
-            'tanggal_terlama' => ['tanggal', 'asc'],
-            'nomor_asc' => ['nomor', 'asc'],
-            'nomor_desc' => ['nomor', 'desc'],
-            'file_number_asc' => ['file_number', 'asc'],
+        $sortOrder = match ($request->sort) {
+            'judul_asc'        => ['judul', 'asc'],
+            'judul_desc'       => ['judul', 'desc'],
+            'tanggal_terbaru'  => ['tanggal', 'desc'],
+            'tanggal_terlama'  => ['tanggal', 'asc'],
+            'nomor_asc'        => ['nomor', 'asc'],
+            'nomor_desc'       => ['nomor', 'desc'],
+            'file_number_asc'  => ['file_number', 'asc'],
             'file_number_desc' => ['file_number', 'desc'],
-            'terbaru' => ['created_at', 'desc'],
-            'terlama' => ['created_at', 'asc'],
-            default => ['created_at', 'desc']
+            'terbaru'          => ['created_at', 'desc'],
+            'terlama'          => ['created_at', 'asc'],
+            default            => ['created_at', 'desc']
         };
 
         $query->orderBy($sortOrder[0], $sortOrder[1]);
         $dataDokumenHukum = $query->paginate(12)->withQueryString();
 
         $data = [
-            'dataDokumenHukum' => $dataDokumenHukum,
-            'dataJenisDokumen' => JenisDokumen::all(),
+            'dataDokumenHukum'    => $dataDokumenHukum,
+            'dataJenisDokumen'    => JenisDokumen::all(),
             'dataKategoriDokumen' => KategoriDokumen::all(),
-            'totalDokumen' => DokumenHukum::count(),
-            'dokumenAktif' => DokumenHukum::where('status', 'aktif')->count(),
-            'dokumenTidakAktif' => DokumenHukum::where('status', 'tidak_aktif')->count(),
-            'dokumenUtama' => DokumenHukum::where('file_type', 'utama')->count(),
-            'dokumenLampiran' => DokumenHukum::where('file_type', 'lampiran')->count(),
-            'dokumenBulanIni' => DokumenHukum::whereMonth('created_at', now()->month)
+            'totalDokumen'        => DokumenHukum::count(),
+            'dokumenAktif'        => DokumenHukum::where('status', 'aktif')->count(),
+            'dokumenTidakAktif'   => DokumenHukum::where('status', 'tidak_aktif')->count(),
+            'dokumenUtama'        => DokumenHukum::where('file_type', 'utama')->count(),
+            'dokumenLampiran'     => DokumenHukum::where('file_type', 'lampiran')->count(),
+            'dokumenBulanIni'     => DokumenHukum::whereMonth('created_at', now()->month)
                 ->whereYear('created_at', now()->year)
-                ->count()
+                ->count(),
         ];
 
         return view('pages.guest.dokumen_hukum.index', $data);
@@ -58,9 +58,9 @@ class DokumenHukumController extends Controller
     public function create()
     {
         $data = [
-            'dataJenisDokumen' => JenisDokumen::all(),
+            'dataJenisDokumen'    => JenisDokumen::all(),
             'dataKategoriDokumen' => KategoriDokumen::all(),
-            'fileNumber' => DokumenHukum::generateFileNumber('utama')
+            'fileNumber'          => DokumenHukum::generateFileNumber('utama'),
         ];
 
         return view('pages.guest.dokumen_hukum.create', $data);
@@ -69,17 +69,17 @@ class DokumenHukumController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'jenis_id' => 'required|exists:jenis_dokumen,id',
-            'kategori_id' => 'required|exists:kategori_dokumen,kategori_id',
-            'nomor' => 'required|unique:dokumen_hukum|max:255',
-            'judul' => 'required|max:255',
-            'tanggal' => 'required|date',
-            'ringkasan' => 'nullable|string',
-            'status' => 'required|in:aktif,tidak_aktif',
-            'file_type' => 'required|in:utama,lampiran',
-            'file_number' => 'nullable|unique:dokumen_hukum,file_number|max:50',
-            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:5120',
-            'attachments.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048'
+            'jenis_id'      => 'required|exists:jenis_dokumen,id',
+            'kategori_id'   => 'required|exists:kategori_dokumen,kategori_id',
+            'nomor'         => 'required|unique:dokumen_hukum|max:255',
+            'judul'         => 'required|max:255',
+            'tanggal'       => 'required|date',
+            'ringkasan'     => 'nullable|string',
+            'status'        => 'required|in:aktif,tidak_aktif',
+            'file_type'     => 'required|in:utama,lampiran',
+            'file_number'   => 'nullable|unique:dokumen_hukum,file_number|max:50',
+            'file'          => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:5120',
+            'attachments.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         ]);
 
         if (empty($validatedData['file_number'])) {
@@ -90,7 +90,7 @@ class DokumenHukumController extends Controller
 
         // Upload File Utama
         if ($request->hasFile('file')) {
-            $file = $request->file('file');
+            $file           = $request->file('file');
             $collectionName = $validatedData['file_type'] === 'utama' ? 'dokumen_utama' : 'dokumen_lampiran';
 
             $dokumenHukum->addMedia($file->getRealPath())
@@ -98,7 +98,7 @@ class DokumenHukumController extends Controller
                 ->usingFileName($validatedData['file_number'] . '_' . time() . '.' . $file->getClientOriginalExtension())
                 ->withCustomProperties([
                     'file_number' => $validatedData['file_number'],
-                    'file_type' => $validatedData['file_type']
+                    'file_type'   => $validatedData['file_type'],
                 ])
                 ->toMediaCollection($collectionName);
         }
@@ -110,9 +110,9 @@ class DokumenHukumController extends Controller
                     ->usingName($attachment->getClientOriginalName())
                     ->usingFileName('ATTACH_' . $validatedData['file_number'] . '_' . time() . '_' . Str::random(4) . '.' . $attachment->getClientOriginalExtension())
                     ->withCustomProperties([
-                        'file_number' => $validatedData['file_number'],
-                        'file_type' => 'lampiran',
-                        'is_attachment' => true
+                        'file_number'   => $validatedData['file_number'],
+                        'file_type'     => 'lampiran',
+                        'is_attachment' => true,
                     ])
                     ->toMediaCollection('dokumen_lampiran');
             }
@@ -128,7 +128,7 @@ class DokumenHukumController extends Controller
             ->findOrFail($id);
 
         return view('pages.guest.dokumen_hukum.show', [
-            'dataDokumenHukum' => $dataDokumenHukum
+            'dataDokumenHukum' => $dataDokumenHukum,
         ]);
     }
 
@@ -137,9 +137,9 @@ class DokumenHukumController extends Controller
         $dataDokumenHukum = DokumenHukum::with(['mainFile', 'attachments'])->findOrFail($id);
 
         $data = [
-            'dataDokumenHukum' => $dataDokumenHukum,
-            'dataJenisDokumen' => JenisDokumen::all(),
-            'dataKategoriDokumen' => KategoriDokumen::all()
+            'dataDokumenHukum'    => $dataDokumenHukum,
+            'dataJenisDokumen'    => JenisDokumen::all(),
+            'dataKategoriDokumen' => KategoriDokumen::all(),
         ];
 
         return view('pages.guest.dokumen_hukum.edit', $data);
@@ -150,17 +150,17 @@ class DokumenHukumController extends Controller
         $dokumenHukum = DokumenHukum::findOrFail($id);
 
         $validatedData = $request->validate([
-            'jenis_id' => 'required|exists:jenis_dokumen,id',
-            'kategori_id' => 'required|exists:kategori_dokumen,kategori_id',
-            'nomor' => 'required|max:255|unique:dokumen_hukum,nomor,' . $id . ',dokumen_id',
-            'judul' => 'required|max:255',
-            'tanggal' => 'required|date',
-            'ringkasan' => 'nullable|string',
-            'status' => 'required|in:aktif,tidak_aktif',
-            'file_type' => 'required|in:utama,lampiran',
-            'file_number' => 'nullable|max:50|unique:dokumen_hukum,file_number,' . $id . ',dokumen_id',
-            'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:5120',
-            'attachments.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048'
+            'jenis_id'      => 'required|exists:jenis_dokumen,id',
+            'kategori_id'   => 'required|exists:kategori_dokumen,kategori_id',
+            'nomor'         => 'required|max:255|unique:dokumen_hukum,nomor,' . $id . ',dokumen_id',
+            'judul'         => 'required|max:255',
+            'tanggal'       => 'required|date',
+            'ringkasan'     => 'nullable|string',
+            'status'        => 'required|in:aktif,tidak_aktif',
+            'file_type'     => 'required|in:utama,lampiran',
+            'file_number'   => 'nullable|max:50|unique:dokumen_hukum,file_number,' . $id . ',dokumen_id',
+            'file'          => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:5120',
+            'attachments.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         ]);
 
         // Update custom properties di media jika file_number berubah
@@ -184,7 +184,7 @@ class DokumenHukumController extends Controller
                 ->usingFileName($validatedData['file_number'] . '_' . time() . '.' . $file->getClientOriginalExtension())
                 ->withCustomProperties([
                     'file_number' => $validatedData['file_number'],
-                    'file_type' => $validatedData['file_type']
+                    'file_type'   => $validatedData['file_type'],
                 ])
                 ->toMediaCollection($collectionName);
         }
@@ -196,9 +196,9 @@ class DokumenHukumController extends Controller
                     ->usingName($attachment->getClientOriginalName())
                     ->usingFileName('ATTACH_' . $validatedData['file_number'] . '_' . time() . '_' . Str::random(4) . '.' . $attachment->getClientOriginalExtension())
                     ->withCustomProperties([
-                        'file_number' => $validatedData['file_number'],
-                        'file_type' => 'lampiran',
-                        'is_attachment' => true
+                        'file_number'   => $validatedData['file_number'],
+                        'file_type'     => 'lampiran',
+                        'is_attachment' => true,
                     ])
                     ->toMediaCollection('dokumen_lampiran');
             }
@@ -230,7 +230,7 @@ class DokumenHukumController extends Controller
 
         $media = $dokumenHukum->mainFile ?? $dokumenHukum->media()->first();
 
-        if (!$media) {
+        if (! $media) {
             abort(404, 'File tidak ditemukan');
         }
 
@@ -240,21 +240,39 @@ class DokumenHukumController extends Controller
     public function searchByFileNumber(Request $request)
     {
         $request->validate([
-            'file_number' => 'required|string'
+            'file_number' => 'required|string',
         ]);
 
         $dokumenHukum = DokumenHukum::with(['jenisDokumen', 'kategoriDokumen', 'mainFile', 'attachments'])
             ->byFileNumber($request->file_number)
             ->first();
 
-        if (!$dokumenHukum) {
+        if (! $dokumenHukum) {
             return redirect()->back()
                 ->with('error', 'Dokumen dengan nomor file ' . $request->file_number . ' tidak ditemukan.');
         }
 
         return view('pages.guest.dokumen_hukum.show', [
-            'dataDokumenHukum' => $dokumenHukum
+            'dataDokumenHukum' => $dokumenHukum,
         ]);
     }
-}
+    public function download($file_number)
+    {
+        // 1. Cari data berdasarkan file_number
+        $dokumen = DokumenHukum::where('file_number', $file_number)->firstOrFail();
 
+        // 2. Tentukan path file (SESUAIKAN folder ini dengan kodingan upload Anda)
+        // Contoh jika file ada di: storage/app/public/dokumen_hukum/nama_file.pdf
+        $filePath = 'dokumen_hukum/' . $dokumen->nama_file;
+
+        // Atau jika Anda menyimpan full path di database, gunakan: $filePath = $dokumen->path;
+
+        // 3. Cek apakah file fisik ada
+        if (! Storage::disk('public')->exists($filePath)) {
+            return back()->with('error', 'File fisik tidak ditemukan di server.');
+        }
+
+        // 4. Proses Download
+        return Storage::disk('public')->download($filePath, $dokumen->judul . '.' . pathinfo($filePath, PATHINFO_EXTENSION));
+    }
+}

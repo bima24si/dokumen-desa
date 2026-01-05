@@ -12,22 +12,22 @@ class JenisDokumenController extends Controller
      */
     public function index(Request $request)
     {
-        // Data untuk dropdown filter
+        // Data untuk dropdown filter (opsional, jika dipakai di view)
         $data['allJenis'] = JenisDokumen::select('nama_jenis')->distinct()->get();
 
-        // Kolom yang bisa di-filter
+        // 1. Kolom yang bisa di-filter (misal: ?nama_jenis=Surat)
         $filterableColumns = ['nama_jenis'];
 
-        // Kolom yang bisa dicari
+        // 2. Kolom yang bisa dicari via search box global
         $searchableColumns = ['nama_jenis', 'deskripsi'];
 
-        // Query dengan filter dan search
+        // Mulai Query
         $query = JenisDokumen::query();
 
-        // Apply filter
+        // Apply filter (Memanggil scopeFilter di Model)
         $query->filter($request, $filterableColumns);
 
-        // Apply search
+        // Apply search (Memanggil scopeSearch di Model)
         $query->search($request, $searchableColumns);
 
         // Get paginated results
@@ -49,19 +49,30 @@ class JenisDokumenController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'nama_jenis' => 'required|unique:jenis_dokumen|max:255',
-            'deskripsi' => 'nullable|string',
+        $validatedData = $request->validate([
+            'nama_jenis' => 'required|unique:jenis_dokumen,nama_jenis|max:255',
+            'deskripsi'  => 'nullable|string',
         ]);
 
-        JenisDokumen::create($data);
+        JenisDokumen::create($validatedData);
 
-        return redirect()->route('dokumen.index')->with('success', 'Jenis dokumen berhasil ditambahkan!');
+        return redirect()->route('dokumen.index')
+            ->with('success', 'Jenis dokumen berhasil ditambahkan!');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
+
+    public function show(string $id)
+    {
+        // Mengambil data jenis dokumen beserta relasi dokumennya (jika ada)
+        // 'dokumens' diambil dari nama fungsi relasi di Model JenisDokumen
+        $jenisDokumen = JenisDokumen::with('dokumens')->findOrFail($id);
+
+        return view('pages.guest.dokumen.show', compact('jenisDokumen'));
+    }
+    
     public function edit(string $id)
     {
         $data['dataJenisDokumen'] = JenisDokumen::findOrFail($id);
@@ -75,14 +86,16 @@ class JenisDokumenController extends Controller
     {
         $jenisDokumen = JenisDokumen::findOrFail($id);
 
-        $data = $request->validate([
+        $validatedData = $request->validate([
+            // Validasi unique mengecualikan ID saat ini agar tidak error jika nama tidak diganti
             'nama_jenis' => 'required|max:255|unique:jenis_dokumen,nama_jenis,' . $id,
-            'deskripsi' => 'nullable|string',
+            'deskripsi'  => 'nullable|string',
         ]);
 
-        $jenisDokumen->update($data);
+        $jenisDokumen->update($validatedData);
 
-        return redirect()->route('dokumen.index')->with('success', 'Jenis dokumen berhasil diubah!');
+        return redirect()->route('dokumen.index')
+            ->with('success', 'Jenis dokumen berhasil diubah!');
     }
 
     /**
@@ -93,6 +106,7 @@ class JenisDokumenController extends Controller
         $jenisDokumen = JenisDokumen::findOrFail($id);
         $jenisDokumen->delete();
 
-        return redirect()->route('dokumen.index')->with('success', 'Jenis dokumen berhasil dihapus!');
+        return redirect()->route('dokumen.index')
+            ->with('success', 'Jenis dokumen berhasil dihapus!');
     }
 }

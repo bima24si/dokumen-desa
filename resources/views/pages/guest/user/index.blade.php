@@ -3,7 +3,6 @@
 @section('title', 'Data Users')
 
 @section('content')
-    <!-- Page Header -->
     <div class="page-header">
         <div class="container">
             <div class="row align-items-center">
@@ -21,7 +20,6 @@
     </div>
 
     <div class="container">
-        <!-- Alert -->
         @if (session('success'))
             <div class="alert alert-success alert-custom alert-dismissible fade show" role="alert">
                 <i class="fas fa-check-circle me-2"></i>
@@ -38,7 +36,6 @@
             </div>
         @endif
 
-        <!-- Statistik Users -->
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="card stat-card">
@@ -81,11 +78,9 @@
             </div>
         </div>
 
-        <!-- Filter dan Search Form -->
         <div class="card mb-4">
             <div class="card-body">
                 <form method="GET" action="{{ route('user.index') }}" class="row g-3 align-items-end">
-                    <!-- Search -->
                     <div class="col-md-8">
                         <label for="search" class="form-label">Pencarian User</label>
                         <div class="input-group">
@@ -103,7 +98,6 @@
                         </div>
                     </div>
 
-                    <!-- Reset Button -->
                     <div class="col-md-4">
                         @if (request()->hasAny(['search']))
                             <a href="{{ route('user.index') }}" class="btn btn-outline-secondary w-100">
@@ -115,7 +109,6 @@
             </div>
         </div>
 
-        <!-- Info Hasil Filter -->
         @if (request()->hasAny(['search']))
             <div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
                 <i class="fas fa-info-circle me-2"></i>
@@ -127,27 +120,53 @@
             </div>
         @endif
 
-        <!-- Cards Grid -->
         <div class="card-grid">
             @forelse ($dataUser as $user)
                 <div class="card-custom">
                     <div class="card-header-custom">
-                        <h5>{{ $user->name }}</h5>
-                        @if (auth()->id() == $user->id)
-                            <span class="badge bg-primary">Akun Saya</span>
-                        @endif
+                        <div class="d-flex align-items-center w-100">
+                            <div class="flex-shrink-0 me-3">
+                                <img src="{{ $user->photo ? asset('storage/' . $user->photo) : asset('assets-guest/images/no-image.jpg') }}"
+                                    alt="{{ $user->name }}" class="rounded-circle border"
+                                    style="width: 50px; height: 50px; object-fit: cover;">
+                            </div>
+
+                            <div class="flex-grow-1 min-width-0">
+                                <h5 class="mb-0 text-truncate" title="{{ $user->name }}">
+                                    {{ $user->name }}
+                                </h5>
+                            </div>
+
+                            @if (auth()->id() == $user->id)
+                                <div class="flex-shrink-0 ms-2">
+                                    <span class="badge bg-primary">Akun Saya</span>
+                                </div>
+                            @endif
+                        </div>
                     </div>
+
                     <div class="card-body-custom">
                         <div class="card-item">
-                            <div class="card-label">ID User</div>
-                            <div class="card-value">#{{ $user->id }}</div>
+                            <div class="card-label">Role</div>
+                            <div class="card-value">
+                                @php
+                                    $role = strtolower($user->role);
+                                    $badgeClass = match ($role) {
+                                        'admin' => 'bg-danger',
+                                        'warga' => 'bg-success',
+                                        default => 'bg-info',
+                                    };
+                                @endphp
+                                <span class="badge {{ $badgeClass }}">
+                                    {{ ucfirst($role) }}
+                                </span>
+                            </div>
                         </div>
 
                         <div class="card-item">
                             <div class="card-label">Email</div>
-                            <div class="card-value">{{ $user->email }}</div>
+                            <div class="card-value text-break">{{ $user->email }}</div>
                         </div>
-
 
                         <div class="card-item">
                             <div class="card-label">Dibuat</div>
@@ -207,7 +226,6 @@
             @endforelse
         </div>
 
-        <!-- Pagination -->
         <div class="mt-3">
             {{ $dataUser->links('pagination::bootstrap-5') }}
         </div>
@@ -270,6 +288,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             background: white;
+            display: flex;
+            flex-direction: column;
         }
 
         .card-custom:hover {
@@ -279,15 +299,11 @@
 
         .card-header-custom {
             padding: 1.25rem 1.25rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
+            /* Flex layout now handled by Bootstrap classes inside HTML for better control */
         }
 
         .card-header-custom h5 {
             margin: 0;
-            flex: 1;
             font-size: 1.1rem;
             color: #2c3e50;
             line-height: 1.4;
@@ -295,6 +311,7 @@
 
         .card-body-custom {
             padding: 1rem 1.25rem 1.25rem;
+            flex: 1;
         }
 
         .card-item {
@@ -317,6 +334,11 @@
             text-align: right;
             flex: 1;
             margin-left: 1rem;
+        }
+
+        /* Helper for text truncation */
+        .min-width-0 {
+            min-width: 0;
         }
 
         .card-divider {
@@ -393,12 +415,6 @@
         @media (max-width: 768px) {
             .card-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .card-header-custom {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
             }
 
             .card-actions {

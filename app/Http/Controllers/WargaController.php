@@ -51,6 +51,18 @@ class WargaController extends Controller
     }
 
     /**
+     * Display the specified resource. (INI YANG BARU KITA TAMBAHKAN)
+     */
+    public function show(string $id)
+    {
+        // Mengambil data berdasarkan ID, jika tidak ada akan error 404
+        $warga = Warga::findOrFail($id);
+
+        // Mengirim data ke view show
+        return view('pages.guest.warga.show', compact('warga'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -91,4 +103,4 @@ class WargaController extends Controller
 
         return redirect()->route('warga.index')->with('success', 'Data warga berhasil dihapus!');
     }
-}
+}   

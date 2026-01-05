@@ -12,17 +12,14 @@ class WargaSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 100; $i++) {
             DB::table('warga')->insert([
-                'no_ktp' => $faker->unique()->numerify('################'),
+                'no_ktp' => $faker->unique()->numerify('1471############'), // Format NIK
                 'nama' => $faker->name,
                 'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),
                 'agama' => $faker->randomElement(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu']),
-                'pekerjaan' => $faker->jobTitle,
-
-                // FIX: No HP Indonesia, max panjang 15 digit
+                'pekerjaan' => $faker->jobTitle, // Faker id_ID sudah menyediakan pekerjaan dlm Indo
                 'telp' => '08' . $faker->numerify('##########'),
-
                 'email' => $faker->unique()->safeEmail,
                 'created_at' => now(),
                 'updated_at' => now(),

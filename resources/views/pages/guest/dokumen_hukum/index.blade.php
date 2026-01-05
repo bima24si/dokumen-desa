@@ -1,10 +1,8 @@
-<!-- [file name]: index.blade.php -->
 @extends('layouts.guest.app')
 
 @section('title', 'Dokumen Hukum')
 
 @section('content')
-    <!-- Page Header -->
     <div class="page-header">
         <div class="container">
             <div class="row align-items-center">
@@ -14,15 +12,14 @@
                 </div>
                 <div class="col-md-4 text-end">
                     <a href="{{ route('dokumen-hukum.create') }}" class="btn btn-light btn-lg">
-                        <i class="fas fa-plus me-2"></i>Tambah Dokumen Hukum
+                        <i class="fas fa-plus me-2"></i>Tambah Dokumen
                     </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <!-- Alert -->
+    <div class="container mt-4">
         @if (session('success'))
             <div class="alert alert-success alert-custom alert-dismissible fade show" role="alert">
                 <i class="fas fa-check-circle me-2"></i>
@@ -31,59 +28,17 @@
             </div>
         @endif
 
-        <!-- Quick Stats -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon bg-primary">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ $totalDokumen }}</h3>
-                        <p>Total Dokumen</p>
-                    </div>
-                </div>
+        @if (session('error'))
+            <div class="alert alert-danger alert-custom alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon bg-success">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ $dokumenAktif }}</h3>
-                        <p>Aktif</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon bg-info">
-                        <i class="fas fa-file-import"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ $dokumenUtama ?? 0 }}</h3>
-                        <p>File Utama</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon bg-warning">
-                        <i class="fas fa-paperclip"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>{{ $dokumenLampiran ?? 0 }}</h3>
-                        <p>Lampiran</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @endif
 
-        <!-- Filter dan Search Form -->
-        <div class="card mb-4">
+        <div class="card mb-4 shadow-sm border-0">
             <div class="card-body">
                 <form method="GET" action="{{ route('dokumen-hukum.index') }}" class="row g-3 align-items-end">
-                    <!-- Search by File Number -->
                     <div class="col-md-4">
                         <label for="file_number_search" class="form-label">Cari Nomor File</label>
                         <div class="input-group">
@@ -94,8 +49,6 @@
                             </button>
                         </div>
                     </div>
-
-                    <!-- File Type Filter -->
                     <div class="col-md-3">
                         <label for="file_type" class="form-label">Tipe File</label>
                         <select name="file_type" class="form-select" onchange="this.form.submit()">
@@ -104,8 +57,6 @@
                             <option value="lampiran" {{ request('file_type') == 'lampiran' ? 'selected' : '' }}>Lampiran</option>
                         </select>
                     </div>
-
-                    <!-- Jenis Dokumen Filter -->
                     <div class="col-md-3">
                         <label for="jenis_id" class="form-label">Jenis Dokumen</label>
                         <select name="jenis_id" class="form-select" onchange="this.form.submit()">
@@ -118,12 +69,10 @@
                             @endforeach
                         </select>
                     </div>
-
-                    <!-- Reset Button -->
                     <div class="col-md-2">
                         @if (request()->hasAny(['search', 'jenis_id', 'file_type', 'file_number']))
                             <a href="{{ route('dokumen-hukum.index') }}" class="btn btn-outline-secondary w-100">
-                                <i class="fas fa-refresh me-1"></i> Reset
+                                <i class="fas fa-redo me-1"></i> Reset
                             </a>
                         @endif
                     </div>
@@ -131,49 +80,81 @@
             </div>
         </div>
 
-        <!-- Info Hasil Filter -->
-        @if (request()->hasAny(['search', 'jenis_id', 'file_type', 'file_number']))
-            <div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
-                <i class="fas fa-info-circle me-2"></i>
-                Menampilkan hasil
-                @if (request('file_number'))
-                    pencarian nomor file "<strong>{{ request('file_number') }}</strong>"
-                @endif
-                @if (request('file_type'))
-                    {{ request('file_number') ? 'dan' : '' }} tipe "<strong>{{ ucfirst(request('file_type')) }}</strong>"
-                @endif
-                @if (request('jenis_id'))
-                    @php
-                        $selectedJenis = $dataJenisDokumen->firstWhere('id', request('jenis_id'));
-                    @endphp
-                    {{ (request('file_number') || request('file_type')) ? 'dan' : '' }} jenis "<strong>{{ $selectedJenis->nama_jenis ?? '' }}</strong>"
-                @endif
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card stat-card">
+                    <div class="card-body">
+                        <div class="stat-icon bg-primary">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ $totalDokumen }}</h3>
+                            <p>Total Dokumen</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        @endif
+            <div class="col-md-3">
+                <div class="card stat-card">
+                    <div class="card-body">
+                        <div class="stat-icon bg-success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ $dokumenAktif }}</h3>
+                            <p>Aktif</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card">
+                    <div class="card-body">
+                        <div class="stat-icon bg-info">
+                            <i class="fas fa-file-import"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ $dokumenUtama ?? 0 }}</h3>
+                            <p>File Utama</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card">
+                    <div class="card-body">
+                        <div class="stat-icon bg-warning">
+                            <i class="fas fa-paperclip"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>{{ $dokumenLampiran ?? 0 }}</h3>
+                            <p>Lampiran</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Cards Grid -->
         <div class="card-grid">
             @forelse ($dataDokumenHukum as $item)
                 <div class="card-custom">
                     <div class="card-header-custom">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h5>{{ Str::limit($item->judul, 60) }}</h5>
-                            <div class="d-flex flex-column align-items-end">
-                                <span class="badge bg-{{ $item->status == 'aktif' ? 'success' : 'secondary' }} mb-1">
-                                    {{ ucfirst($item->status) }}
-                                </span>
-                                <span class="badge bg-{{ $item->file_type == 'utama' ? 'info' : 'warning' }}">
-                                    {{ ucfirst($item->file_type) }}
-                                </span>
-                            </div>
+                        <h5 title="{{ $item->judul }}">{{ Str::limit($item->judul, 40) }}</h5>
+                        <div class="mt-2">
+                            <span class="badge bg-{{ $item->status == 'aktif' ? 'success' : 'secondary' }} me-1">
+                                {{ ucfirst($item->status) }}
+                            </span>
+                            <span class="badge bg-{{ $item->file_type == 'utama' ? 'info' : 'warning' }}">
+                                {{ ucfirst($item->file_type) }}
+                            </span>
                         </div>
                     </div>
+
                     <div class="card-body-custom">
                         <div class="card-item">
                             <div class="card-label">Nomor File</div>
                             <div class="card-value">
-                                <span class="badge bg-light text-dark">
+                                <span class="badge bg-light text-dark border">
                                     <i class="fas fa-hashtag me-1"></i>{{ $item->file_number }}
                                 </span>
                             </div>
@@ -186,12 +167,12 @@
 
                         <div class="card-item">
                             <div class="card-label">Jenis</div>
-                            <div class="card-value">{{ $item->jenisDokumen->nama_jenis }}</div>
+                            <div class="card-value">{{ $item->jenisDokumen->nama_jenis ?? '-' }}</div>
                         </div>
 
                         <div class="card-item">
                             <div class="card-label">Kategori</div>
-                            <div class="card-value">{{ $item->kategoriDokumen->nama ?? 'Tidak ada kategori' }}</div>
+                            <div class="card-value">{{ $item->kategoriDokumen->nama ?? '-' }}</div>
                         </div>
 
                         <div class="card-item">
@@ -203,47 +184,50 @@
 
                         <div class="card-actions">
                             <a href="{{ route('dokumen-hukum.show', $item->dokumen_id) }}" class="btn-action btn-detail">
-                                <i class="fas fa-eye"></i>Detail
+                                <i class="fas fa-eye me-1"></i>Detail
                             </a>
-                            @if($item->mainFile)
+
+                            @if($item->mainFile || $item->file_number)
                                 <a href="{{ route('dokumen-hukum.download', $item->file_number) }}"
                                    class="btn-action btn-download" target="_blank">
-                                    <i class="fas fa-download"></i>Download
+                                    <i class="fas fa-download me-1"></i>Unduh
                                 </a>
                             @endif
+
                             <a href="{{ route('dokumen-hukum.edit', $item->dokumen_id) }}" class="btn-action btn-edit">
-                                <i class="fas fa-edit"></i>Edit
+                                <i class="fas fa-edit me-1"></i>Edit
                             </a>
+
                             <form action="{{ route('dokumen-hukum.destroy', $item->dokumen_id) }}" method="POST"
-                                onsubmit="return confirm('Hapus dokumen hukum ini?')" class="d-inline">
+                                  onsubmit="return confirm('Hapus dokumen hukum ini?')" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-action btn-delete">
-                                    <i class="fas fa-trash"></i>Hapus
+                                    <i class="fas fa-trash me-1"></i>Hapus
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="col-12">
+                <div class="col-12" style="grid-column: 1 / -1;">
                     <div class="card-custom">
-                        <div class="empty-state">
-                            <i class="fas fa-file-contract"></i>
-                            <h4>Belum ada dokumen hukum</h4>
-                            <p>
+                        <div class="empty-state text-center py-5">
+                            <i class="fas fa-file-contract fa-3x text-muted mb-3"></i>
+                            <h4 class="text-muted">Belum ada dokumen hukum</h4>
+                            <p class="text-muted mb-4">
                                 @if (request()->hasAny(['search', 'jenis_id', 'file_type', 'file_number']))
                                     Tidak ditemukan dokumen dengan kriteria yang dicari
                                 @else
                                     Mulai dengan menambahkan dokumen hukum pertama
                                 @endif
                             </p>
-                            <a href="{{ route('dokumen-hukum.create') }}" class="btn btn-primary mt-3">
-                                <i class="fas fa-plus me-2"></i>Tambah Dokumen Hukum
+                            <a href="{{ route('dokumen-hukum.create') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Tambah Dokumen
                             </a>
                             @if (request()->hasAny(['search', 'jenis_id', 'file_type', 'file_number']))
-                                <a href="{{ route('dokumen-hukum.index') }}" class="btn btn-outline-secondary mt-2">
-                                    <i class="fas fa-refresh me-2"></i>Tampilkan Semua Dokumen
+                                <a href="{{ route('dokumen-hukum.index') }}" class="btn btn-outline-secondary ms-2">
+                                    <i class="fas fa-refresh me-2"></i>Reset Filter
                                 </a>
                             @endif
                         </div>
@@ -252,53 +236,149 @@
             @endforelse
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-3">
+        <div class="mt-4 d-flex justify-content-center">
             {{ $dataDokumenHukum->links('pagination::bootstrap-5') }}
         </div>
     </div>
 
     <style>
+        /* Statistik Card Style */
         .stat-card {
-            background: white;
+            border: none;
             border-radius: 10px;
-            padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card .card-body {
             display: flex;
             align-items: center;
+            padding: 1.5rem;
         }
         .stat-icon {
             width: 60px;
             height: 60px;
-            border-radius: 10px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 15px;
             color: white;
-            font-size: 24px;
+            font-size: 1.5rem;
         }
         .stat-info h3 {
             margin: 0;
-            font-size: 24px;
             font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.5rem;
         }
         .stat-info p {
-            margin: 5px 0 0;
-            color: #666;
+            margin: 0;
+            color: #7f8c8d;
+            font-size: 0.9rem;
         }
-        .card-custom .badge {
-            font-size: 0.7rem;
-            padding: 4px 8px;
-        }
-        .btn-download {
-            background-color: #17a2b8;
-            color: white;
-        }
-        .btn-download:hover {
-            background-color: #138496;
-            color: white;
-        }
-    </style>
 
+        /* Grid Layout Styles */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Sedikit diperlebar agar button muat */
+            gap: 1.5rem;
+        }
+        .card-custom {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .card-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        .card-header-custom {
+            padding: 1.25rem;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fff;
+            border-radius: 10px 10px 0 0;
+        }
+        .card-header-custom h5 {
+            margin: 0;
+            font-weight: 600;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+        .card-body-custom {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+        .card-label {
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        .card-value {
+            color: #2c3e50;
+            font-weight: 600;
+            text-align: right;
+            max-width: 60%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-divider {
+            height: 1px;
+            background-color: #f0f0f0;
+            margin: 1rem 0;
+        }
+
+        /* Button Actions Styles - Updated untuk Teks */
+        .card-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: auto;
+            flex-wrap: wrap; /* Agar button turun jika layar sempit */
+        }
+        .btn-action {
+            /* width: 35px; REMOVED: Agar lebar menyesuaikan teks */
+            /* height: 35px; REMOVED */
+            padding: 6px 12px; /* Ditambahkan Padding */
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem; /* Ukuran font teks */
+            font-weight: 500;
+        }
+
+        .btn-detail { color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+        .btn-detail:hover { background: #3b82f6; color: white; }
+
+        .btn-edit { color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+        .btn-edit:hover { background: #f59e0b; color: white; }
+
+        .btn-delete { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        .btn-delete:hover { background: #ef4444; color: white; }
+
+        .btn-download { color: #10b981; background: rgba(16, 185, 129, 0.1); }
+        .btn-download:hover { background: #10b981; color: white; }
+    </style>
 @endsection

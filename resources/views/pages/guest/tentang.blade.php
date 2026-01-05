@@ -2,287 +2,205 @@
 @include('layouts.guest.wa-float')
 
 @section('content')
-<section class="main-content">
+    <section class="main-content">
 
-    <!-- Start Hero Section -->
-    <div class="hero">
-        <div class="container">
-            <div class="row justify-content-between">
-                <div class="col-lg-7">
-                    <div class="intro-excerpt">
-                        <h1>Tentang Kami</h1>
-                        <p class="mb-4">
-                            Website Dokumen Desa merupakan platform digital yang dibangun untuk memudahkan masyarakat
-                            dalam mengakses berbagai jenis dokumen dan informasi penting desa secara transparan dan efisien.
-                        </p>
-                        <p class="mb-4">
-                            Kami berkomitmen untuk memberikan pelayanan terbaik dalam pengelolaan dokumen desa
-                            yang mudah diakses oleh seluruh lapisan masyarakat.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="hero-img-wrap text-center">
-                        <img src="https://www.masterplandesa.com/wp-content/uploads/2025/06/Pedesaan.jpg"
-                             class="img-fluid rounded"
-                             alt="Desa Mandiri"
-                             style="max-height: 350px; width: 100%; object-fit: cover;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Hero Section -->
-
-    <!-- Start Visi Misi Section -->
-    <div class="product-section" id="visi-misi">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 text-center mb-5">
-                    <h2 class="section-title">Visi & Misi Kami</h2>
-                    <p class="mb-4">Landasan utama dalam pengembangan sistem dokumen desa</p>
-                </div>
-            </div>
-
-            <div class="row gcr-row justify-content-center">
-                <!-- Visi Card -->
-                <div class="col-md-6 mb-4">
-                    <div class="gcr-card h-100">
-                        <div class="gcr-header">
-                            <div class="icon-wrapper">
-                                <i class="fas fa-eye text-primary"></i>
-                            </div>
-                            <div class="header-text">
-                                <h6 class="name">Visi</h6>
-                            </div>
-                        </div>
-                        <div class="gcr-footer">
-                            <p class="date">
-                                Menjadi platform terdepan dalam pengelolaan dokumen desa yang transparan,
-                                akuntabel, dan mudah diakses oleh seluruh masyarakat.
+        <div class="hero py-5 bg-light">
+            <div class="container">
+                <div class="row justify-content-between align-items-center flex-column-reverse flex-lg-row">
+                    <div class="col-lg-5 mb-4 mb-lg-0">
+                        <div class="intro-excerpt">
+                            <span class="d-block text-primary fw-bold text-uppercase letter-spacing-2 mb-2">Tentang Kami</span>
+                            <h1 class="mb-4 display-5 fw-bold text-dark">Sistem Informasi <br> <span class="text-primary">Dokumen Desa</span></h1>
+                            <p class="mb-4 text-secondary lead">
+                                Solusi digital untuk mempermudah administrasi desa. Kami menghadirkan layanan pengajuan surat dan pengelolaan arsip yang <strong>cepat, transparan, dan dapat diakses dari mana saja.</strong>
                             </p>
+                            <div class="d-flex gap-2">
+                                <a href="#cara-kerja" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">Pelajari Alur</a>
+                                <a href="{{ route('dokumen.index') }}" class="btn btn-outline-dark btn-lg rounded-pill px-4">Cari Dokumen</a>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Misi Card -->
-                <div class="col-md-6 mb-4">
-                    <div class="gcr-card h-100">
-                        <div class="gcr-header">
-                            <div class="icon-wrapper">
-                                <i class="fas fa-bullseye text-success"></i>
-                            </div>
-                            <div class="header-text">
-                                <h6 class="name">Misi</h6>
-                            </div>
-                        </div>
-                        <div class="gcr-footer">
-                            <ul class="misi-list">
-                                <li class="mb-2">
-                                    <i class="fas fa-check-circle text-success me-2"></i>
-                                    Memudahkan akses dokumen bagi masyarakat
-                                </li>
-                                <li class="mb-2">
-                                    <i class="fas fa-check-circle text-success me-2"></i>
-                                    Meningkatkan transparansi pengelolaan dokumen
-                                </li>
-                                <li class="mb-2">
-                                    <i class="fas fa-check-circle text-success me-2"></i>
-                                    Melestarikan arsip dokumen desa secara digital
-                                </li>
-                                <li class="mb-2">
-                                    <i class="fas fa-check-circle text-success me-2"></i>
-                                    Memberikan pelayanan yang cepat dan tepat
-                                </li>
-                                <li class="mb-2">
-                                    <i class="fas fa-check-circle text-success me-2"></i>
-                                    Mengoptimalkan teknologi untuk efisiensi administrasi
-                                </li>
-                            </ul>
+                    <div class="col-lg-7">
+                        <div class="position-relative">
+                            <div class="bg-shape"></div>
+                            <img src="{{ asset('assets-guest/images/dash.png') }}"
+                                 class="img-fluid rounded-4 shadow-lg position-relative z-index-1"
+                                 alt="Dashboard Dokumen Desa"
+                                 style="width: 100%; border: 5px solid rgba(255,255,255,0.5);">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- End Visi Misi Section -->
 
-    {{-- <!-- Start Product Section -->
-    <div class="product-section" id="fitur">
-        <div class="container">
-            <div class="row">
-                <!-- Header -->
-                <div class="col-md-12 col-lg-6 mb-5 mb-lg-0 text-center">
-                    <h2 class="section-title">Fitur Unggulan Platform</h2>
-                    <p class="mb-4">Kami menyediakan berbagai fitur untuk mendukung kebutuhan administrasi desa yang modern dan efisien.</p>
-                </div>
-            </div>
-
-            <div class="row gcr-row mt-4">
-                <!-- Feature 1 -->
-                <div class="col-md-6 mb-4">
-                    <a href="#" class="gcr-card-link">
-                        <div class="gcr-card">
-                            <div class="gcr-header">
-                                <img src="https://via.placeholder.com/48" alt="Kategori Dokumen" class="profile-img" />
-                                <div class="header-text">
-                                    <h6 class="name">Kategori Dokumen</h6>
-                                </div>
-                            </div>
-                            <div class="gcr-footer">
-                                <p class="date">Dokumen terorganisir dalam berbagai kategori untuk memudahkan pencarian dan akses</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Feature 2 -->
-                <div class="col-md-6 mb-4">
-                    <a href="#" class="gcr-card-link">
-                        <div class="gcr-card">
-                            <div class="gcr-header">
-                                <img src="https://via.placeholder.com/48" alt="Pencarian Cepat" class="profile-img" />
-                                <div class="header-text">
-                                    <h6 class="name">Pencarian Cepat</h6>
-                                </div>
-                            </div>
-                            <div class="gcr-footer">
-                                <p class="date">Fitur pencarian yang powerful untuk menemukan dokumen dengan mudah dan akurat</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Feature 3 -->
-                <div class="col-md-6 mb-4">
-                    <a href="#" class="gcr-card-link">
-                        <div class="gcr-card">
-                            <div class="gcr-header">
-                                <img src="https://via.placeholder.com/48" alt="Keamanan Data" class="profile-img" />
-                                <div class="header-text">
-                                    <h6 class="name">Keamanan Data</h6>
-                                </div>
-                            </div>
-                            <div class="gcr-footer">
-                                <p class="date">Dokumen penting terlindungi dengan sistem keamanan berlapis dan terenkripsi</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Feature 4 -->
-                <div class="col-md-6 mb-4">
-                    <a href="#" class="gcr-card-link">
-                        <div class="gcr-card">
-                            <div class="gcr-header">
-                                <img src="https://via.placeholder.com/48" alt="Akses Mudah" class="profile-img" />
-                                <div class="header-text">
-                                    <h6 class="name">Akses Mudah</h6>
-                                </div>
-                            </div>
-                            <div class="gcr-footer">
-                                <p class="date">Dapat diakses kapan saja dan dimana saja melalui berbagai perangkat</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Product Section -->
-
-    <!-- Start Team Section -->
-    <div class="why-choose-section bg-light">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 text-center mb-5">
-                    <h2 class="section-title">Tim Pengembang</h2>
-                    <p>Dibangun oleh tim yang berdedikasi untuk kemajuan desa digital</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-6 col-md-4">
-                    <div class="feature text-center">
-                        <div class="icon mb-3">
-                            <img src="https://via.placeholder.com/80" class="rounded-circle" alt="Team Member">
-                        </div>
-                        <h3>John Doe</h3>
-                        <p class="text-muted">Lead Developer</p>
-                        <p>Bertanggung jawab dalam pengembangan sistem dan maintenance platform</p>
+        <div class="section py-5" id="cara-kerja">
+            <div class="container">
+                <div class="row justify-content-center mb-5">
+                    <div class="col-lg-7 text-center">
+                        <h2 class="section-title mb-2">Bagaimana Cara Kerjanya?</h2>
+                        <p class="text-muted">Tiga langkah mudah untuk mendapatkan dokumen Anda</p>
                     </div>
                 </div>
 
-                <div class="col-6 col-md-4">
-                    <div class="feature text-center">
-                        <div class="icon mb-3">
-                            <img src="https://via.placeholder.com/80" class="rounded-circle" alt="Team Member">
+                <div class="row g-4 text-center">
+                    <div class="col-md-4">
+                        <div class="step-card p-4 h-100 border rounded-4 bg-white position-relative">
+                            <div class="step-icon bg-primary-soft text-primary mb-3 mx-auto">
+                                <i class="fas fa-user-plus fa-2x"></i>
+                            </div>
+                            <h4 class="h5 fw-bold">1. Buat Akun</h4>
+                            <p class="text-muted small mb-0">Daftarkan diri Anda menggunakan NIK untuk mendapatkan akses penuh ke layanan mandiri.</p>
+                            <div class="d-none d-md-block position-absolute top-50 end-0 translate-middle-y me-n3 text-muted opacity-25">
+                                <i class="fas fa-chevron-right fa-2x"></i>
+                            </div>
                         </div>
-                        <h3>Jane Smith</h3>
-                        <p class="text-muted">UI/UX Designer</p>
-                        <p>Mendesain interface yang user-friendly dan mudah digunakan masyarakat</p>
                     </div>
-                </div>
 
-                <div class="col-6 col-md-4">
-                    <div class="feature text-center">
-                        <div class="icon mb-3">
-                            <img src="https://via.placeholder.com/80" class="rounded-circle" alt="Team Member">
+                    <div class="col-md-4">
+                        <div class="step-card p-4 h-100 border rounded-4 bg-white position-relative">
+                            <div class="step-icon bg-warning-soft text-warning mb-3 mx-auto">
+                                <i class="fas fa-file-signature fa-2x"></i>
+                            </div>
+                            <h4 class="h5 fw-bold">2. Ajukan Surat</h4>
+                            <p class="text-muted small mb-0">Pilih jenis surat yang dibutuhkan, isi formulir, dan kirim pengajuan secara online.</p>
+                            <div class="d-none d-md-block position-absolute top-50 end-0 translate-middle-y me-n3 text-muted opacity-25">
+                                <i class="fas fa-chevron-right fa-2x"></i>
+                            </div>
                         </div>
-                        <h3>Mike Johnson</h3>
-                        <p class="text-muted">Data Analyst</p>
-                        <p>Mengelola dan menganalisis data dokumen untuk pengembangan fitur</p>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="step-card p-4 h-100 border rounded-4 bg-white">
+                            <div class="step-icon bg-success-soft text-success mb-3 mx-auto">
+                                <i class="fas fa-check-circle fa-2x"></i>
+                            </div>
+                            <h4 class="h5 fw-bold">3. Selesai & Unduh</h4>
+                            <p class="text-muted small mb-0">Pantau status validasi. Setelah disetujui, dokumen digital siap diunduh.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- End Team Section -->
 
-    <!-- Start Contact Info -->
-    <div class="contact-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center mb-5">
-                    <h2 class="section-title">Kontak Kami</h2>
-                    <p>Hubungi kami untuk informasi lebih lanjut</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <div class="contact-info text-center">
-                        <div class="icon mb-3">
-                            <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+        <div class="section py-5 bg-white border-top">
+            <div class="container">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-5">
+                        <div class="visi-card bg-primary text-white p-5 rounded-4 shadow position-relative overflow-hidden">
+                            <div class="position-relative z-index-1">
+                                <h3 class="fw-bold mb-3"><i class="fas fa-eye me-2"></i> Visi Kami</h3>
+                                <p class="lead mb-0" style="opacity: 0.9;">
+                                    "Mewujudkan tata kelola pemerintahan desa yang transparan, akuntabel, dan modern melalui digitalisasi arsip."
+                                </p>
+                            </div>
+                            <i class="fas fa-quote-right position-absolute bottom-0 end-0 mb-n2 me-3 text-white opacity-10" style="font-size: 8rem;"></i>
                         </div>
-                        <h3>Alamat</h3>
-                        <p>Jl. Desa No. 123<br>Kecamatan Contoh<br>Kabupaten Sample, 12345</p>
                     </div>
-                </div>
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <div class="contact-info text-center">
-                        <div class="icon mb-3">
-                            <i class="fas fa-phone fa-2x text-success"></i>
+
+                    <div class="col-lg-7">
+                        <div class="ps-lg-4">
+                            <h3 class="fw-bold mb-4 text-dark"><i class="fas fa-bullseye text-primary me-2"></i> Misi Utama</h3>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start">
+                                        <div class="icon-square bg-light text-primary rounded-3 me-3 p-2">
+                                            <i class="fas fa-bolt"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Pelayanan Cepat</h6>
+                                            <p class="small text-muted mb-0">Memangkas birokrasi yang berbelit.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start">
+                                        <div class="icon-square bg-light text-primary rounded-3 me-3 p-2">
+                                            <i class="fas fa-shield-alt"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Data Aman</h6>
+                                            <p class="small text-muted mb-0">Arsip tersimpan digital dengan aman.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start">
+                                        <div class="icon-square bg-light text-primary rounded-3 me-3 p-2">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Akses Mudah</h6>
+                                            <p class="small text-muted mb-0">Dapat diakses seluruh lapisan warga.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start">
+                                        <div class="icon-square bg-light text-primary rounded-3 me-3 p-2">
+                                            <i class="fas fa-leaf"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Ramah Lingkungan</h6>
+                                            <p class="small text-muted mb-0">Mengurangi penggunaan kertas (Paperless).</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <h3>Telepon</h3>
-                        <p>+62 123 4567 8900</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-0">
-                    <div class="contact-info text-center">
-                        <div class="icon mb-3">
-                            <i class="fas fa-envelope fa-2x text-warning"></i>
-                        </div>
-                        <h3>Email</h3>
-                        <p>info@dokumendesa.com</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- End Contact Info --> --}}
 
-</section>
+    </section>
 
+    <style>
+        /* Tipografi */
+        .letter-spacing-2 { letter-spacing: 2px; }
 
+        /* Hero Styling */
+        .bg-shape {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100%;
+            height: 100%;
+            background: rgba(59, 93, 80, 0.1); /* Warna primary transparan */
+            border-radius: 1.5rem;
+            z-index: 0;
+        }
 
+        /* Step Cards */
+        .step-card {
+            transition: all 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-color: transparent !important;
+        }
+
+        /* Icons */
+        .step-icon {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .bg-primary-soft { background-color: rgba(59, 93, 80, 0.1); }
+        .bg-warning-soft { background-color: rgba(255, 193, 7, 0.1); }
+        .bg-success-soft { background-color: rgba(25, 135, 84, 0.1); }
+
+        /* Icon Square for Misi */
+        .icon-square {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 @endsection

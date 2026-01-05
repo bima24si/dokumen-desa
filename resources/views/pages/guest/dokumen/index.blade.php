@@ -91,6 +91,9 @@
                         <div class="card-divider"></div>
 
                         <div class="card-actions">
+                            <a href="{{ route('dokumen.show', $item->id) }}" class="btn-action btn-detail text-primary">
+                                <i class="fas fa-eye"></i> Detail
+                            </a>
                             <a href="{{ route('dokumen.edit', $item->id) }}" class="btn-action btn-edit">
                                 <i class="fas fa-edit"></i>Edit
                             </a>

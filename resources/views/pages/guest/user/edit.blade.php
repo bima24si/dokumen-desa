@@ -1,10 +1,3 @@
-<!-- /*
-* Bootstrap 5
-* Template Name: Furni
-* Template Author: Untree.co
-* Template URI: https://untree.co/
-* License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
 <!doctype html>
 <html lang="en">
 
@@ -29,27 +22,19 @@
 
 <body>
 
-    <!-- Start Header/Navigation -->
-
     @include('layouts.guest.navbar')
-    <!-- End Header/Navigation -->
-
-    <!-- Start Content Section -->
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <!-- Breadcrumb -->
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('home.index') }}"><i class="fas fa-home"></i></a>
                         </li>
                         <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Users</a></li>
                         <li class="breadcrumb-item active">Edit User</li>
-
                     </ol>
                 </nav>
 
-                <!-- Header -->
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <h2 class="section-title">Edit User</h2>
@@ -57,23 +42,20 @@
                     </div>
                     <div class="col-md-6 text-end">
                         <a href="{{ route('user.index') }}" class="btn btn-secondary">
-
                             <i class="fas fa-arrow-left me-2"></i>Kembali
                         </a>
                     </div>
                 </div>
 
-                <!-- Form -->
                 <div class="card border-0 shadow">
                     <div class="card-body p-5">
 
-                        <form action="{{ route('user.update', $user->id) }}" method="POST">
+                        <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                             @method('PUT')
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-4">
-
                                         <label for="name" class="form-label">Nama Lengkap</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
                                             id="name" name="name" value="{{ old('name', $user->name) }}"
@@ -92,37 +74,56 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
 
-                                <div class="mb-3">
-    <label class="form-label">Role Pengguna</label>
-    <select name="role" class="form-control">
-        <option value="User" {{ $user->role == 'User' ? 'selected' : '' }}>User</option>
-        <option value="Warga" {{ $user->role == 'Warga' ? 'selected' : '' }}>Warga</option>
-        <option value="Admin" {{ $user->role == 'Admin' ? 'selected' : '' }}>Admin</option>
-    </select>
-</div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Role Pengguna</label>
+                                        <select name="role" class="form-select @error('role') is-invalid @enderror">
+                                            <option value="user" {{ strtolower(old('role', $user->role)) == 'user' ? 'selected' : '' }}>User</option>
+                                            <option value="warga" {{ strtolower(old('role', $user->role)) == 'warga' ? 'selected' : '' }}>Warga</option>
+                                            <option value="admin" {{ strtolower(old('role', $user->role)) == 'admin' ? 'selected' : '' }}>Admin</option>
+                                        </select>
+                                        @error('role')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
 
                                 <div class="col-md-6">
                                     <div class="mb-4">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="password"
-                                            class="form-control @error('password') is-invalid @enderror" id="password"
-                                            name="password"
-                                            placeholder="Masukkan password baru (kosongkan jika tidak diubah)">
-                                        @error('password')
+                                        <label for="photo" class="form-label">Foto Profil</label>
+
+                                        <div class="mb-2">
+                                            <img src="{{ $user->photo ? asset('storage/' . $user->photo) : asset('assets-guest/images/no-image.jpg') }}"
+                                                 alt="Current Photo"
+                                                 class="img-thumbnail"
+                                                 style="height: 100px; width: 100px; object-fit: cover;">
+                                        </div>
+
+                                        <input type="file" class="form-control @error('photo') is-invalid @enderror"
+                                            id="photo" name="photo" accept="image/*">
+
+                                        @error('photo')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        <small class="text-muted">Biarkan kosong jika tidak ingin mengganti foto.</small>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="password" class="form-label">Password Baru</label>
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                             id="password" name="password" placeholder="Kosongkan jika tidak diubah">
+                                         @error('password')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                         <small class="form-text text-muted">
-                                            Password minimal 3 karakter dan harus mengandung huruf kapital
+                                            Password minimal 6 karakter
                                         </small>
                                     </div>
 
                                     <div class="mb-4">
-                                        <label for="password_confirmation" class="form-label">Konfirmasi
-                                            Password</label>
+                                        <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                                         <input type="password" class="form-control" id="password_confirmation"
-                                            name="password_confirmation" placeholder="Masukkan ulang password baru">
+                                            name="password_confirmation" placeholder="Ulangi password baru">
                                     </div>
                                 </div>
                             </div>
@@ -143,12 +144,7 @@
             </div>
         </div>
     </div>
-    <!-- End Content Section -->
-
-    <!-- Start Footer Section -->
     @include('layouts.guest.footer')
-    <!-- End Footer Section -->
-
     {{-- start js --}}
     @include('layouts.guest.js')
     {{-- end js --}}

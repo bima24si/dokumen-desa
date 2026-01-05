@@ -63,13 +63,11 @@
                 <!-- Form -->
                 <div class="card border-0 shadow">
                     <div class="card-body p-5">
-                        <form action="{{ route('user.store') }}" method="POST">
-
+                        <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-4">
-
                                         <label for="name" class="form-label">Nama Lengkap</label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
                                             id="name" name="name" value="{{ old('name') }}"
@@ -88,18 +86,34 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Role Pengguna</label>
+                                        <select name="role" class="form-select @error('role') is-invalid @enderror">
+                                            <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User
+                                                (Akses Terbatas)</option>
+                                            <option value="warga" {{ old('role') == 'warga' ? 'selected' : '' }}>Warga
+                                                (Akses Desa)</option>
+                                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin
+                                                (Akses Penuh)</option>
+                                        </select>
+                                        @error('role')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
 
-                                <div class="mb-3">
-    <label class="form-label">Role Pengguna</label>
-    <select name="role" class="form-control">
-        <option value="User">User (Akses Terbatas)</option>
-        <option value="Warga">Warga (Akses Desa)</option>
-        <option value="Admin">Admin (Akses Penuh)</option>
-    </select>
-</div>
-
                                 <div class="col-md-6">
+                                    <div class="mb-4">
+                                        <label for="photo" class="form-label">Foto Profil</label>
+                                        <input type="file" class="form-control @error('photo') is-invalid @enderror"
+                                            id="photo" name="photo" accept="image/*">
+                                        @error('photo')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        <small class="text-muted">Format: JPG, PNG. Maks: 2MB</small>
+                                    </div>
+
                                     <div class="mb-4">
                                         <label for="password" class="form-label">Password</label>
                                         <input type="password"
@@ -108,18 +122,13 @@
                                         @error('password')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                        <small class="form-text text-muted">
-                                            Password minimal 3 karakter dan harus mengandung huruf kapital
-                                        </small>
                                     </div>
 
                                     <div class="mb-4">
                                         <label for="password_confirmation" class="form-label">Konfirmasi
                                             Password</label>
-                                        <input type="password"
-                                            class="form-control @error('password') is-invalid @enderror"
-                                            id="password_confirmation" name="password_confirmation"
-                                            placeholder="Masukkan ulang password" required>
+                                        <input type="password" class="form-control" id="password_confirmation"
+                                            name="password_confirmation" placeholder="Masukkan ulang password" required>
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +139,6 @@
                                         <i class="fas fa-save me-2"></i> Simpan Data
                                     </button>
                                     <a href="{{ route('user.index') }}" class="btn btn-outline-secondary btn-lg ms-2">
-
                                         <i class="fas fa-times me-2"></i> Batal
                                     </a>
                                 </div>
@@ -138,18 +146,15 @@
                         </form>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Content Section -->
+                <!-- End Content Section -->
 
-    <!-- Start Footer Section -->
-    @include('layouts.guest.footer')
-    <!-- End Footer Section -->
+                <!-- Start Footer Section -->
+                @include('layouts.guest.footer')
+                <!-- End Footer Section -->
 
-    {{-- start js --}}
-    @include('layouts.guest.js')
-    {{-- end js --}}
+                {{-- start js --}}
+                @include('layouts.guest.js')
+                {{-- end js --}}
 </body>
 
 </html>

@@ -8,79 +8,56 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarsFurni">
-
             <div class="navbar-nav mx-auto py-0 align-items-center">
-
-                {{-- 1. Home (Semua Bisa Akses) --}}
-                <a href="{{ route('home.index') }}"
-                    class="nav-item nav-link {{ request()->routeIs('home.index') ? 'active' : '' }}">
+                {{-- 1. Home --}}
+                <a href="{{ route('home.index') }}" class="nav-item nav-link {{ request()->routeIs('home.index') ? 'active' : '' }}">
                     <i class="fas fa-home me-1"></i>Home
                 </a>
 
-                {{-- 2. Tentang (Semua Bisa Akses) --}}
-                <a href="{{ route('tentang') }}"
-                    class="nav-item nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}">
+                {{-- 2. Tentang --}}
+                <a href="{{ route('tentang') }}" class="nav-item nav-link {{ request()->routeIs('tentang') ? 'active' : '' }}">
                     <i class="fas fa-info-circle me-1"></i>Tentang
                 </a>
 
-                {{-- 3. Dokumen Hukum (Semua User Login Bisa Lihat Linknya) --}}
+                {{-- 3. Dokumen Hukum --}}
                 @auth
-                    <a href="{{ route('dokumen-hukum.index') }}"
-                        class="nav-item nav-link {{ request()->routeIs('dokumen-hukum.*') ? 'active' : '' }}">
+                    <a href="{{ route('dokumen-hukum.index') }}" class="nav-item nav-link {{ request()->routeIs('dokumen-hukum.*') ? 'active' : '' }}">
                         <i class="fas fa-book me-2"></i>Dokumen Hukum
                     </a>
                 @endauth
 
-                {{-- 4. Dropdown Layanan (TAMPILKAN SEMUA MENU ADMIN KE SEMUA USER) --}}
+                {{-- 4. Dropdown Layanan (Menu Admin) --}}
                 @auth
+                    @if(auth()->user()->role == 'admin') {{-- Cek Role Admin di View agar lebih aman --}}
                     <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->is('warga*', 'user*', 'kategori*', 'jenis*') ? 'active' : '' }}"
-                            href="#" id="layananDropdown" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                        <a class="nav-link dropdown-toggle {{ request()->is('warga*', 'user*', 'kategori*', 'jenis*', 'lampiran*', 'riwayat*') ? 'active' : '' }}"
+                            href="#" id="layananDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-concierge-bell me-1"></i>Layanan
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="layananDropdown">
-
-                            {{-- Menu 1: Kelola Warga (Akses dibatasi Middleware) --}}
-                            <li>
-                                <a href="{{ route('warga.index') }}" class="dropdown-item">
-                                    <i class="fas fa-users me-2"></i>Kelola Data Warga
-                                </a>
-                            </li>
-
-                            {{-- Menu 2: Kelola User (Akses dibatasi Middleware) --}}
-                            <li>
-                                <a href="{{ route('user.index') }}" class="dropdown-item">
-                                    <i class="fas fa-user-cog me-2"></i>Kelola Data User
-                                </a>
-                            </li>
-
+                            <li><a href="{{ route('warga.index') }}" class="dropdown-item"><i class="fas fa-users me-2"></i>Data Warga</a></li>
+                            <li><a href="{{ route('user.index') }}" class="dropdown-item"><i class="fas fa-user-cog me-2"></i>Data User</a></li>
                             <li><hr class="dropdown-divider"></li>
+                            <li><a href="{{ route('kategori-dokumen.index') }}" class="dropdown-item"><i class="fas fa-tags me-2"></i>Kategori Dokumen</a></li>
+                            <li><a href="{{ route('jenis-dokumen.index') }}" class="dropdown-item"><i class="fas fa-file-alt me-2"></i>Jenis Dokumen</a></li>
 
-                            {{-- Menu 3: Kategori Dokumen (Akses Admin Saja) --}}
+                            {{-- MENU LAMPIRAN DOKUMEN --}}
                             <li>
-                                <a href="{{ route('kategori-dokumen.index') }}" class="dropdown-item">
-                                    <i class="fas fa-tags me-2"></i>Kategori Dokumen
+                                <a href="{{ route('lampiran-dokumen.index') }}" class="dropdown-item">
+                                    <i class="fas fa-paperclip me-2"></i>Lampiran Dokumen
                                 </a>
                             </li>
 
-                            {{-- Menu 4: Jenis Dokumen (Akses Admin Saja) --}}
-                            <li>
-                                <a href="{{ route('jenis-dokumen.index') }}" class="dropdown-item">
-                                    <i class="fas fa-file-alt me-2"></i>Jenis Dokumen
-                                </a>
-                            </li>
-
+                            <li><a href="{{ route('riwayat-perubahan.index') }}" class="dropdown-item"><i class="fas fa-history me-2"></i>Riwayat Perubahan</a></li>
                         </ul>
                     </div>
+                    @endif
                 @endauth
             </div>
 
-            {{-- Bagian Kanan (Profil / Login) --}}
+            {{-- Bagian Kanan (User Profile) --}}
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-
                 @auth
-                    {{-- JIKA SUDAH LOGIN --}}
                     <div class="nav-item dropdown">
                         <div class="user-icon dropdown-toggle align-items-center" id="profileDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer; color: white;">
@@ -93,15 +70,6 @@
                                     <i class="fas fa-user-circle me-2"></i>Profil Saya
                                 </a>
                             </li>
-                            {{-- Menampilkan Waktu Terakhir Login --}}
-                            <li>
-                                <span class="dropdown-item-text text-muted" style="font-size: 0.8rem;">
-                                    <i class="fas fa-history me-1"></i>Login: <br>
-                                    <strong>
-                                        {{ Auth::user()->last_login_at ? Auth::user()->last_login_at->diffForHumans() : 'Baru saja' }}
-                                    </strong>
-                                </span>
-                            </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <a class="dropdown-item text-danger" href="{{ route('logout') }}">
@@ -111,15 +79,12 @@
                         </ul>
                     </div>
                 @else
-                    {{-- JIKA BELUM LOGIN (GUEST) --}}
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary px-4 text-white" href="{{ route('login-form') }}"
-                            style="background-color: #3b5d50; border-radius: 20px;">
+                        <a class="nav-link btn btn-primary px-4 text-white" href="{{ route('login-form') }}" style="background-color: #3b5d50; border-radius: 20px;">
                             <i class="fas fa-sign-in-alt me-1"></i> Login
                         </a>
                     </li>
                 @endauth
-
             </ul>
         </div>
     </div>

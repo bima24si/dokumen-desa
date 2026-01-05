@@ -5,22 +5,28 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
+use Faker\Factory;
 
 class CreateFirstUserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Pastikan tidak ada user dengan email yang sama
-        if (DB::table('users')->where('email', 'admin@email.com')->doesntExist()) {
-            User::create([
+        // 1. Pastikan Admin Utama ada
+        User::firstOrCreate(
+            ['email' => 'admin@email.com'], // Cek berdasarkan email
+            [
                 'name' => 'Admin Desa',
-                'email' => 'admin@email.com',
-                'password' => Hash::make('admin123'), // Password: admin123
-            ]);
+                'password' => Hash::make('admin123'),
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // 2. Tambahkan user dummy hingga total mencapai 100
+        $currentCount = User::count();
+        $targetCount = 100;
+
+        if ($currentCount < $targetCount) {
+            User::factory($targetCount - $currentCount)->create();
         }
     }
 }

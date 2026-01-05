@@ -13,25 +13,46 @@ class DokumenHukumSeeder extends Seeder
     {
         $faker = Faker::create('id_ID');
 
-        // Ambil ID dari tabel referensi
+        // Pastikan tabel referensi ada isinya
         $jenisIds = DB::table('jenis_dokumen')->pluck('id')->toArray();
         $kategoriIds = DB::table('kategori_dokumen')->pluck('kategori_id')->toArray();
 
         if (empty($jenisIds) || empty($kategoriIds)) {
-            echo "Seeder gagal: Pastikan tabel jenis_dokumen dan kategori_dokumen sudah terisi!\n";
+            echo "Seeder DokumenHukum dilewati karena tabel jenis/kategori kosong.\n";
             return;
         }
 
-        for ($i = 1; $i <= 30; $i++) {
+        // Bank Kata untuk Judul Indonesia
+        $prefix = ['Peraturan', 'Keputusan', 'Surat Edaran', 'Instruksi', 'Berita Acara', 'Nota Dinas', 'Maklumat'];
+        $pejabat = ['Kepala Desa', 'Sekretaris Desa', 'Ketua BPD', 'Panitia Pembangunan', 'Kepala Dusun', 'Karang Taruna'];
+        $topik = [
+            'tentang Anggaran Pendapatan Belanja Desa',
+            'mengenai Ketertiban dan Keamanan Lingkungan',
+            'terkait Pelaksanaan Lomba Kebersihan',
+            'tentang Penyaluran Bantuan Langsung Tunai',
+            'mengenai Renovasi Jalan Desa',
+            'terkait Izin Usaha Mikro Kecil',
+            'tentang Pengelolaan Bank Sampah',
+            'mengenai Jadwal Ronda Malam',
+            'terkait Pemanfaatan Tanah Kas Desa',
+            'tentang Protokol Kesehatan Desa'
+        ];
+
+        for ($i = 1; $i <= 100; $i++) {
             $fileType = $faker->randomElement(['utama', 'lampiran']);
+
+            // Merangkai Judul
+            $judulBaru = $faker->randomElement($prefix) . ' ' .
+                         $faker->randomElement($pejabat) . ' ' .
+                         $faker->randomElement($topik) . ' Tahun ' . $faker->year();
 
             DB::table('dokumen_hukum')->insert([
                 'jenis_id' => $faker->randomElement($jenisIds),
                 'kategori_id' => $faker->randomElement($kategoriIds),
-                'nomor' => $faker->unique()->regexify('[A-Z]{2}/[0-9]{3}/[0-9]{4}'),
-                'judul' => $faker->sentence(6),
-                'tanggal' => $faker->date('Y-m-d'),
-                'ringkasan' => $faker->paragraph(3),
+                'nomor' => $faker->unique()->regexify('[A-Z]{2}/[0-9]{3}/VI/[0-9]{4}'),
+                'judul' => $judulBaru,
+                'tanggal' => $faker->dateTimeBetween('-5 years', 'now'),
+                'ringkasan' => 'Dokumen ini merupakan arsip resmi desa yang membahas secara rinci ' . strtolower($judulBaru) . '.',
                 'status' => $faker->randomElement(['aktif', 'tidak_aktif']),
                 'file_number' => DokumenHukum::generateFileNumber($fileType),
                 'file_type' => $fileType,

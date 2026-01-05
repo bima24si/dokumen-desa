@@ -11,32 +11,27 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * Atribut yang bisa diisi secara massal (Mass Assignment).
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role', // Pastikan ini ada agar role bisa disimpan
-        'last_login_at', // <--- Tambahkan ini
+        'role',
+        'photo', // Pastikan ini ada
+        'last_login_at',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'last_login_at' => 'datetime', // <--- Tambahkan ini agar bisa pakai diffForHumans()
+        'last_login_at' => 'datetime',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
-
     ];
 
-    /**
-     * Scope untuk filter data
-     */
+    // Scope Filter
     public function scopeFilter(Builder $query, $request, array $filterableColumns): Builder
     {
         foreach ($filterableColumns as $column) {
@@ -47,9 +42,7 @@ class User extends Authenticatable
         return $query;
     }
 
-    /**
-     * Scope untuk search data
-     */
+    // Scope Search
     public function scopeSearch(Builder $query, $request, array $columns): Builder
     {
         if ($request->filled('search')) {

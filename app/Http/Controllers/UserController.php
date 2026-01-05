@@ -4,22 +4,19 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        $filterableColumns = []; // Bisa ditambahkan jika ada filter lain nanti
+        $filterableColumns = [];
         $searchableColumns = ['name', 'email'];
 
         $query = User::query()
             ->filter($request, $filterableColumns)
             ->search($request, $searchableColumns);
 
-        // Default sorting
         $query->orderBy('created_at', 'desc');
 
         $data = [
@@ -30,98 +27,106 @@ class UserController extends Controller
         return view('pages.guest.user.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('pages.guest.user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $request->validate([
+        // Validasi
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
-            'role' => 'required|in:admin,warga,user', // <-- TAMBAHKAN VALIDASI ROLE
+            'role' => 'required|in:admin,warga,user',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
         ]);
 
-        User::create([
-    'name' => $request->name,
-    'email' => $request->email,
-    'username' => $request->username,
-    'password' => Hash::make($request->password),
-    'role' => $request->role, // Tambahkan baris ini
-]);
+        // Hash Password
+        $validatedData['password'] = Hash::make($request->password);
+
+        // Simpan Role lowercase agar konsisten
+        $validatedData['role'] = strtolower($request->role);
+
+        // Handle Upload Foto
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('photos', 'public');
+            $validatedData['photo'] = $path;
+        }
+
+        User::create($validatedData);
 
         return redirect()->route('user.index')->with('success', 'Penambahan Data User Berhasil!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $data['user'] = User::findOrFail($id);
         return view('pages.guest.user.show', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $data['user'] = User::findOrFail($id);
         return view('pages.guest.user.edit', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $user = User::findOrFail($id);
 
-        $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'role' => 'required|in:admin,warga,user',
-        ]);
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ];
 
-        // Update data user
-        $dataToUpdate = [
-    'name' => $request->name,
-    'email' => $request->email,
-    'username' => $request->username,
-    'role' => $request->role, // Tambahkan baris ini
-];
+        if ($request->filled('password')) {
+            $rules['password'] = 'min:6|confirmed';
+        }
 
-        // Update password hanya jika diisi
+        $validatedData = $request->validate($rules);
+
+        // Handle Password
         if ($request->filled('password')) {
             $validatedData['password'] = Hash::make($request->password);
         } else {
             unset($validatedData['password']);
         }
 
-        $user->update($validatedData); // Update data, termasuk role
+        // Handle Role
+        if ($request->filled('role')) {
+            $validatedData['role'] = strtolower($request->role);
+        }
+
+        // Handle Photo Update
+        if ($request->hasFile('photo')) {
+            // Hapus foto lama jika ada
+            if ($user->photo && Storage::disk('public')->exists($user->photo)) {
+                Storage::disk('public')->delete($user->photo);
+            }
+            $path = $request->file('photo')->store('photos', 'public');
+            $validatedData['photo'] = $path;
+        }
+
+        $user->update($validatedData);
 
         return redirect()->route('user.index')->with('success', 'User berhasil diubah.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
 
-        // Cek jika user mencoba menghapus dirinya sendiri
         if (auth()->id() == $id) {
             return redirect()->route('user.index')->with('error', 'Tidak dapat menghapus akun sendiri!');
+        }
+
+        // Hapus file foto dari storage
+        if ($user->photo && Storage::disk('public')->exists($user->photo)) {
+            Storage::disk('public')->delete($user->photo);
         }
 
         $user->delete();

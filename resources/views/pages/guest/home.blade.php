@@ -4,7 +4,6 @@
 @section('content')
 <section class="main-content">
 
-    <!-- Start Hero Section -->
     <div class="hero">
         <div class="container">
             <div class="row justify-content-between align-items-center">
@@ -42,9 +41,6 @@
             </div>
         </div>
     </div>
-    <!-- End Hero Section -->
-
-    <!-- Start Features Section -->
     <div class="features-section py-5 bg-light">
         <div class="container">
             <div class="row justify-content-center mb-5">
@@ -90,9 +86,6 @@
             </div>
         </div>
     </div>
-    <!-- End Features Section -->
-
-    <!-- Start Dokumen Section -->
     <div class="product-section py-5" id="dokumen">
         <div class="container">
             <div class="row justify-content-center mb-5">
@@ -149,10 +142,83 @@
             @endif
         </div>
     </div>
-    <!-- End Dokumen Section -->
+    <div class="developer-section py-5 bg-white border-top">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title mb-3">Identitas Pengembang</h2>
+                    <p class="text-muted">Tim di balik pengembangan DokdesKu</p>
+                </div>
+            </div>
 
+            <div class="row justify-content-center g-4">
 
-</section>
+                <div class="col-md-6 col-lg-5">
+                    <div class="developer-card p-4 bg-white rounded-4 shadow-sm h-100 text-center position-relative overflow-hidden border">
+                        <div class="dev-bg-shape"></div>
+
+                        <div class="position-relative z-index-1">
+                            <div class="dev-img-container mb-4 mx-auto">
+                                <img src="{{ asset('assets-guest/images/person_1.jpg') }}"
+                                     alt="Foto Pengembang 1"
+                                     class="img-fluid rounded-circle border border-4 border-white shadow"
+                                     style="width: 150px; height: 150px; object-fit: cover;">
+                            </div>
+
+                            <h3 class="h4 fw-bold mb-1 text-dark">Muhammad Rizky Gunawan</h3>
+                            <p class="text-primary fw-bold mb-1">NIM: 2457301097</p>
+                            <p class="text-muted small mb-4">Program Studi Sistem Informasi</p>
+
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="https://linkedin.com/in/username1" target="_blank" class="social-btn linkedin" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="https://github.com/username1" target="_blank" class="social-btn github" title="GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="https://instagram.com/username1" target="_blank" class="social-btn instagram" title="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-5">
+                    <div class="developer-card p-4 bg-white rounded-4 shadow-sm h-100 text-center position-relative overflow-hidden border">
+                        <div class="dev-bg-shape"></div>
+
+                        <div class="position-relative z-index-1">
+                            <div class="dev-img-container mb-4 mx-auto">
+                                <img src="{{ asset('assets-guest/images/person_2.jpg') }}"
+                                     alt="Foto Pengembang 2"
+                                     class="img-fluid rounded-circle border border-4 border-white shadow"
+                                     style="width: 150px; height: 150px; object-fit: cover;">
+                            </div>
+
+                            <h3 class="h4 fw-bold mb-1 text-dark">Bima Al Arsy Rabbani</h3>
+                            <p class="text-primary fw-bold mb-1">NIM: 2457301027</p>
+                            <p class="text-muted small mb-4">Program Studi Sistem Informasi</p>
+
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="https://linkedin.com/in/username2" target="_blank" class="social-btn linkedin" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="https://github.com/username2" target="_blank" class="social-btn github" title="GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="https://instagram.com/username2" target="_blank" class="social-btn instagram" title="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </section>
 
 <style>
     /* Hero Section */
@@ -170,6 +236,16 @@
     .intro-excerpt h2 {
         color: #ffffff;
         font-weight: 400;
+    }
+
+    /* Override Text Color untuk Hero (Agar Putih) */
+    .text-secondary {
+        --bs-text-opacity: 1;
+        color: rgb(255 255 255) !important;
+    }
+
+    .text-primary {
+        color: #1b0303 !important;
     }
 
     /* Feature Cards */
@@ -276,18 +352,49 @@
         color: white;
     }
 
-    /* CTA Section */
-    .cta-section {
-        background: linear-gradient(135deg, #15a36a 0%, #166d45 100%) !important;
+    /* Developer Section Styles */
+    .developer-card {
+        transition: transform 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.05);
     }
 
-    .text-secondary {
-    --bs-text-opacity: 1;
-    color: rgb(255 255 255) !important;
+    .developer-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
     }
-.text-primary {
-    color: #ededed !important;
-}
+
+    .dev-bg-shape {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(22, 109, 69, 0.05) 0%, rgba(255,255,255,0) 70%);
+        z-index: 0;
+    }
+
+    .social-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .social-btn:hover {
+        transform: translateY(-3px);
+        color: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .social-btn.linkedin { background-color: #0077b5; }
+    .social-btn.github { background-color: #333; }
+    .social-btn.instagram { background-color: #e4405f; }
 
     /* Empty State */
     .empty-doc-state {
