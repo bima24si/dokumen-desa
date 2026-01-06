@@ -123,6 +123,7 @@ Route::middleware(['auth'])->group(function () {
     // ---------------------
 
     Route::resource('lampiran-dokumen', LampiranDokumenController::class);
+    Route::get('/dokumen', [DokumenController::class, 'index'])->name('dokumen.index');
 
     // ... route lain yang butuh login
 });

@@ -4,6 +4,7 @@
 @section('content')
 <section class="main-content">
 
+    {{-- HERO SECTION --}}
     <div class="hero">
         <div class="container">
             <div class="row justify-content-between align-items-center">
@@ -24,7 +25,8 @@
                             <a href="#dokumen" class="btn btn-primary btn-lg px-4 py-2">
                                 <i class="fas fa-file-alt me-2"></i>Jelajahi Dokumen
                             </a>
-                            <a href="{{ route('tentang') }}" class="btn btn-outline-primary btn-lg px-4 py-2">
+                            {{-- Pastikan route 'tentang' juga sudah ada di web.php --}}
+                            <a href="{{ Route::has('tentang') ? route('tentang') : '#' }}" class="btn btn-outline-primary btn-lg px-4 py-2">
                                 <i class="fas fa-info-circle me-2"></i>Tentang Kami
                             </a>
                         </div>
@@ -41,6 +43,8 @@
             </div>
         </div>
     </div>
+
+    {{-- FEATURES SECTION --}}
     <div class="features-section py-5 bg-light">
         <div class="container">
             <div class="row justify-content-center mb-5">
@@ -86,6 +90,8 @@
             </div>
         </div>
     </div>
+
+    {{-- DOCUMENT SECTION --}}
     <div class="product-section py-5" id="dokumen">
         <div class="container">
             <div class="row justify-content-center mb-5">
@@ -114,6 +120,7 @@
                             </div>
                         </div>
                         <div class="doc-card-footer">
+                            {{-- PERBAIKAN: Gunakan javascript:void(0) atau link asli jika ada --}}
                             <a href="#" class="btn doc-btn">
                                 <i class="fas fa-eye me-2"></i>Lihat Dokumen
                             </a>
@@ -134,14 +141,24 @@
             @if($dataJenisDokumen->count() > 0)
             <div class="row mt-5">
                 <div class="col-12 text-center">
-                    <a href="{{ route('dokumen.index') }}" class="btn btn-outline-primary btn-lg">
-                        <i class="fas fa-list me-2"></i>Lihat Semua Kategori
-                    </a>
+                    {{-- PERBAIKAN UTAMA DI SINI --}}
+                    {{-- Cek apakah route ada sebelum dirender untuk mencegah error 500 --}}
+                    @if(Route::has('dokumen.index'))
+                        <a href="{{ route('dokumen.index') }}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-list me-2"></i>Lihat Semua Kategori
+                        </a>
+                    @else
+                        <a href="#" class="btn btn-outline-primary btn-lg disabled" aria-disabled="true">
+                            <i class="fas fa-list me-2"></i>Lihat Semua Kategori (Route Missing)
+                        </a>
+                    @endif
                 </div>
             </div>
             @endif
         </div>
     </div>
+
+    {{-- DEVELOPER SECTION --}}
     <div class="developer-section py-5 bg-white border-top">
         <div class="container">
             <div class="row justify-content-center mb-5">
@@ -152,270 +169,99 @@
             </div>
 
             <div class="row justify-content-center g-4">
-
+                {{-- Developer 1 --}}
                 <div class="col-md-6 col-lg-5">
                     <div class="developer-card p-4 bg-white rounded-4 shadow-sm h-100 text-center position-relative overflow-hidden border">
                         <div class="dev-bg-shape"></div>
-
                         <div class="position-relative z-index-1">
                             <div class="dev-img-container mb-4 mx-auto">
-                                <img src="{{ asset('assets-guest/images/person_1.jpg') }}"
-                                     alt="Foto Pengembang 1"
-                                     class="img-fluid rounded-circle border border-4 border-white shadow"
-                                     style="width: 150px; height: 150px; object-fit: cover;">
+                                <img src="{{ asset('assets-guest/images/person_1.jpg') }}" alt="Muhammad Rizky Gunawan" class="img-fluid rounded-circle border border-4 border-white shadow" style="width: 150px; height: 150px; object-fit: cover;">
                             </div>
-
                             <h3 class="h4 fw-bold mb-1 text-dark">Muhammad Rizky Gunawan</h3>
                             <p class="text-primary fw-bold mb-1">NIM: 2457301097</p>
                             <p class="text-muted small mb-4">Program Studi Sistem Informasi</p>
-
                             <div class="d-flex justify-content-center gap-3">
-                                <a href="https://linkedin.com/in/username1" target="_blank" class="social-btn linkedin" title="LinkedIn">
-                                    <i class="fab fa-linkedin-in"></i>
-                                </a>
-                                <a href="https://github.com/username1" target="_blank" class="social-btn github" title="GitHub">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="https://instagram.com/username1" target="_blank" class="social-btn instagram" title="Instagram">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
+                                <a href="#" class="social-btn linkedin"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-btn github"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-btn instagram"><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                {{-- Developer 2 --}}
                 <div class="col-md-6 col-lg-5">
                     <div class="developer-card p-4 bg-white rounded-4 shadow-sm h-100 text-center position-relative overflow-hidden border">
                         <div class="dev-bg-shape"></div>
-
                         <div class="position-relative z-index-1">
                             <div class="dev-img-container mb-4 mx-auto">
-                                <img src="{{ asset('assets-guest/images/person_2.jpg') }}"
-                                     alt="Foto Pengembang 2"
-                                     class="img-fluid rounded-circle border border-4 border-white shadow"
-                                     style="width: 150px; height: 150px; object-fit: cover;">
+                                <img src="{{ asset('assets-guest/images/person_2.jpg') }}" alt="Bima Al Arsy Rabbani" class="img-fluid rounded-circle border border-4 border-white shadow" style="width: 150px; height: 150px; object-fit: cover;">
                             </div>
-
                             <h3 class="h4 fw-bold mb-1 text-dark">Bima Al Arsy Rabbani</h3>
                             <p class="text-primary fw-bold mb-1">NIM: 2457301027</p>
                             <p class="text-muted small mb-4">Program Studi Sistem Informasi</p>
-
                             <div class="d-flex justify-content-center gap-3">
-                                <a href="https://linkedin.com/in/username2" target="_blank" class="social-btn linkedin" title="LinkedIn">
-                                    <i class="fab fa-linkedin-in"></i>
-                                </a>
-                                <a href="https://github.com/username2" target="_blank" class="social-btn github" title="GitHub">
-                                    <i class="fab fa-github"></i>
-                                </a>
-                                <a href="https://instagram.com/username2" target="_blank" class="social-btn instagram" title="Instagram">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
+                                <a href="#" class="social-btn linkedin"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-btn github"><i class="fab fa-github"></i></a>
+                                <a href="#" class="social-btn instagram"><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-    </section>
+</section>
 
+{{-- STYLE SECTION (Sebaiknya dipindah ke file CSS terpisah, tapi ini aman untuk sementara) --}}
 <style>
     /* Hero Section */
     .hero {
         padding: 80px 0;
         background: linear-gradient(135deg, #407942 0%, #2a602d 100%);
     }
-
-    .intro-excerpt h1 {
-        font-size: 3rem;
-        color: #030506;
-        font-weight: 700;
-    }
-
-    .intro-excerpt h2 {
-        color: #ffffff;
-        font-weight: 400;
-    }
-
-    /* Override Text Color untuk Hero (Agar Putih) */
-    .text-secondary {
-        --bs-text-opacity: 1;
-        color: rgb(255 255 255) !important;
-    }
-
-    .text-primary {
-        color: #1b0303 !important;
-    }
-
+    .intro-excerpt h1 { font-size: 3rem; color: #030506; font-weight: 700; }
+    .intro-excerpt h2 { color: #ffffff; font-weight: 400; }
+    .text-secondary { --bs-text-opacity: 1; color: rgb(255 255 255) !important; }
+    .text-primary { color: #1b0303 !important; }
     /* Feature Cards */
-    .feature-card {
+    .feature-card, .doc-card, .developer-card {
         background: white;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         transition: all 0.3s ease;
         border: 1px solid #e9ecef;
     }
-
-    .feature-card:hover {
+    .feature-card:hover, .doc-card:hover, .developer-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 30px rgba(0,0,0,0.12);
     }
-
-    .feature-icon {
-        margin-bottom: 1rem;
-    }
-
-    .feature-title {
-        color: #000000;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    .feature-description {
-        color: #000000;
-        line-height: 1.6;
-    }
-
-    /* Document Cards */
-    .doc-card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        border: 1px solid #e9ecef;
-        overflow: hidden;
-    }
-
-    .doc-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    }
-
-    .doc-card-header {
-        background: linear-gradient(135deg, #166d45 0%, #3ab65f 100%);
-        color: white;
-        padding: 25px;
-        text-align: center;
-    }
-
-    .doc-icon {
-        font-size: 2.5rem;
-        margin-bottom: 15px;
-        display: block;
-    }
-
-    .doc-title {
-        margin: 0;
-        font-weight: 600;
-        font-size: 1.2rem;
-    }
-
-    .doc-card-body {
-        padding: 25px;
-    }
-
-    .doc-description {
-        color: #6c757d;
-        line-height: 1.6;
-        margin-bottom: 20px;
-    }
-
-    .doc-badge {
-        background: #e3f2fd;
-        color: #1976d2;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 500;
-    }
-
-    .doc-card-footer {
-        padding: 20px 25px;
-        border-top: 1px solid #e9ecef;
-        text-align: center;
-    }
-
-    .doc-btn {
-        background: transparent;
-        color: #15a36a;
-        border: 2px solid #166d45;
-        padding: 8px 20px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .doc-btn:hover {
-        background: #166d45;
-        color: white;
-    }
-
-    /* Developer Section Styles */
-    .developer-card {
-        transition: transform 0.3s ease;
-        border: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .developer-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
-    }
-
-    .dev-bg-shape {
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(22, 109, 69, 0.05) 0%, rgba(255,255,255,0) 70%);
-        z-index: 0;
-    }
-
-    .social-btn {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 1.1rem;
-        transition: all 0.3s ease;
-        text-decoration: none;
-    }
-
-    .social-btn:hover {
-        transform: translateY(-3px);
-        color: white;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
+    .feature-icon { margin-bottom: 1rem; }
+    .feature-title, .doc-title { color: #000000; font-weight: 600; margin-bottom: 1rem; }
+    .feature-description { color: #000000; line-height: 1.6; }
+    /* Doc Cards specific */
+    .doc-card { overflow: hidden; }
+    .doc-card-header { background: linear-gradient(135deg, #166d45 0%, #3ab65f 100%); color: white; padding: 25px; text-align: center; }
+    .doc-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; }
+    .doc-title { margin: 0; font-size: 1.2rem; }
+    .doc-card-body { padding: 25px; }
+    .doc-description { color: #6c757d; line-height: 1.6; margin-bottom: 20px; }
+    .doc-badge { background: #e3f2fd; color: #1976d2; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; }
+    .doc-card-footer { padding: 20px 25px; border-top: 1px solid #e9ecef; text-align: center; }
+    .doc-btn { background: transparent; color: #15a36a; border: 2px solid #166d45; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-weight: 500; transition: all 0.3s ease; }
+    .doc-btn:hover { background: #166d45; color: white; }
+    /* Developer Section */
+    .dev-bg-shape { position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(22, 109, 69, 0.05) 0%, rgba(255,255,255,0) 70%); z-index: 0; }
+    .social-btn { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; transition: all 0.3s ease; text-decoration: none; }
+    .social-btn:hover { transform: translateY(-3px); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
     .social-btn.linkedin { background-color: #0077b5; }
     .social-btn.github { background-color: #333; }
     .social-btn.instagram { background-color: #e4405f; }
-
-    /* Empty State */
-    .empty-doc-state {
-        color: #6c757d;
-    }
-
-    /* Responsive */
+    .empty-doc-state { color: #6c757d; }
     @media (max-width: 768px) {
-        .hero {
-            padding: 60px 0;
-            text-align: center;
-        }
-
-        .intro-excerpt h1 {
-            font-size: 2.2rem;
-        }
-
-        .doc-card-header {
-            padding: 20px;
-        }
+        .hero { padding: 60px 0; text-align: center; }
+        .intro-excerpt h1 { font-size: 2.2rem; }
+        .doc-card-header { padding: 20px; }
     }
 </style>
-
 @endsection
