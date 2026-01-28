@@ -22,17 +22,19 @@ use App\Http\Controllers\RiwayatPerubahanController;
 Route::get('/', [HomeController::class, 'index'])->name('landing');
 Route::get('/tentang', [HomeController::class, 'tentang'])->name('tentang');
 
-// --- DOKUMEN HUKUM (PUBLIC) ---
-// HANYA Index yang ditaruh di sini.
-// Route 'show' (detail) kita taruh DI PALING BAWAH agar tidak memblokir route 'create'.
+// --- DOKUMEN HUKUM (PUBLIC READ-ONLY) ---
 Route::get('/dokumen-hukum', [DokumenHukumController::class, 'index'])->name('dokumen-hukum.index');
+
+// Download Lampiran (Bisa diakses publik atau mau dibatasi? Di sini saya set publik)
 Route::get('/dokumen-hukum/download-attachment/{id}', [DokumenHukumController::class, 'downloadAttachment'])
     ->name('dokumen-hukum.download-attachment');
 
-// Auth (Login & Register)
+// --- AUTHENTICATION ---
 Route::middleware(['guest'])->group(function () {
-    Route::get('/login', [AuthController::class, 'index'])->name('login-form');
+    // PENTING: name('login') wajib ada untuk redirect otomatis middleware auth
+    Route::get('/login', [AuthController::class, 'index'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+
     Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 });
@@ -49,16 +51,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home.index');
     Route::get('/profil', [AuthController::class, 'profile'])->name('profile');
 
-    // --- Fitur Umum User Login ---
+    // --- FITUR UMUM (Semua User Login) ---
     Route::resource('riwayat-perubahan', RiwayatPerubahanController::class);
     Route::get('/dokumen', [JenisDokumenController::class, 'index'])->name('dokumen.index');
 
-    // Download Dokumen Hukum (Member Only)
+    // Download File Utama Dokumen Hukum (Hanya Member)
     Route::get('/dokumen-hukum/download/{file_number}', [DokumenHukumController::class, 'download'])
         ->name('dokumen-hukum.download');
 
     // --- LAMPIRAN DOKUMEN ---
-    // Custom Download Route
+    // Custom Download Route (Harus sebelum resource agar tidak dianggap ID)
     Route::get('lampiran-dokumen/{id}/download', [LampiranDokumenController::class, 'download'])
         ->name('lampiran-dokumen.download');
 
@@ -68,85 +70,42 @@ Route::middleware(['auth'])->group(function () {
 
     /*
     |----------------------------------------------------------------------
-    | A. GROUP ADMIN
+    | A. GROUP ADMIN (Akses Penuh)
     |----------------------------------------------------------------------
     */
     Route::middleware(['checkrole:admin'])->group(function () {
+        // Master Data
         Route::resource('jenis-dokumen', JenisDokumenController::class);
         Route::resource('kategori-dokumen', KategoriDokumenController::class);
 
-        // --- DOKUMEN HUKUM (ADMIN) ---
-        // Ini akan membuat route: create, store, edit, update, destroy
-        // Route ini didefinisikan SEBELUM route 'show' public di bawah,
-        // sehingga '/dokumen-hukum/create' akan masuk ke sini, bukan dianggap ID.
-        Route::resource('dokumen-hukum', DokumenHukumController::class)->except(['index', 'show']);
+        // Dokumen Hukum (Admin: Create, Store, Edit, Update, Destroy)
+        // Kita exclude 'index' dan 'show' karena sudah ada di Public & Fallback
+        Route::resource('dokumen-hukum', DokumenHukumController::class)
+            ->except(['index', 'show']);
 
-        // CRUD User & Warga
+        // Manajemen User & Warga
         Route::resource('user', UserController::class);
         Route::resource('warga', WargaController::class);
     });
 
     /*
     |----------------------------------------------------------------------
-    | B. GROUP WARGA
+    | B. GROUP USER / WARGA (Jika Ada Akses Khusus)
     |----------------------------------------------------------------------
     */
-   Route::middleware(['checkrole:warga'])->group(function () {
-        // Route khusus warga jika ada
+    Route::middleware(['checkrole:warga'])->group(function () {
+        // Tambahkan route khusus warga di sini jika ada
     });
 
-    Route::middleware(['checkrole:user'])->group(function () {
-        // Jika admin juga butuh akses controller ini, pastikan logicnya benar.
-        // Route::resource('user', UserController::class); // Hati-hati duplikasi nama route dengan admin
-    });
-
-});
-  /*
-    |--------------------------------------------------------------------------
-    | C. GROUP USER (CRUD User)
-    |--------------------------------------------------------------------------
-    | Middleware: checkrole:user
-    | EFEK: User 'user' bisa masuk, DAN Admin juga bisa masuk.
-    */
-    Route::middleware(['checkrole:user'])->group(function () {
-        Route::resource('user', UserController::class);
-    });
-
-    Route::middleware(['auth'])->group(function () {
-        // Route untuk halaman profil
-        Route::get('/profil', [AuthController::class, 'profile'])->name('profile');
-        Route::resource('riwayat-perubahan', RiwayatPerubahanController::class);
-        Route::resource('lampiran-dokumen', LampiranDokumenController::class);
-
-        // ... route lain yang butuh login
-    });
-
-
-Route::middleware(['auth'])->group(function () {
-    // Route untuk halaman profil
-    Route::get('/profil', [AuthController::class, 'profile'])->name('profile');
-    Route::resource('riwayat-perubahan', RiwayatPerubahanController::class);
-    Route::get('/dokumen-hukum/download/{file_number}', [DokumenHukumController::class, 'download'])
-        ->name('dokumen-hukum.download');
-    // --- TAMBAHKAN INI ---
-    Route::get('lampiran-dokumen/{id}/download', [LampiranDokumenController::class, 'download'])
-        ->name('lampiran-dokumen.download');
-    // ---------------------
-
-    Route::resource('lampiran-dokumen', LampiranDokumenController::class);
-    Route::get('/dokumen', [JenisDokumenController::class, 'index'])->name('dokumen.index');
-
-    // ... route lain yang butuh login
 });
 
 /*
 |--------------------------------------------------------------------------
-| 3. PUBLIC FALLBACK (Ditaruh paling bawah)
+| 3. PUBLIC FALLBACK (Detail Dokumen)
 |--------------------------------------------------------------------------
+| Ditaruh PALING BAWAH.
+| Tujuannya: Agar URL seperti /dokumen-hukum/create (punya admin)
+| TIDAK dianggap sebagai {id} dokumen.
 */
-
-// PENTING: Route ini menangkap /dokumen-hukum/{id}.
-// Kita taruh paling bawah supaya kata kunci seperti 'create' atau 'download'
-// yang ada di atas TIDAK dianggap sebagai {id}.
 Route::get('/dokumen-hukum/{dokumen_hukum}', [DokumenHukumController::class, 'show'])
     ->name('dokumen-hukum.show');
