@@ -80,7 +80,7 @@
                     </div>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary px-4 text-white" href="{{ route('login-form') }}" style="background-color: #3b5d50; border-radius: 20px;">
+                        <a class="nav-link btn btn-primary px-4 text-white" href="{{ route('login') }}" style="background-color: #3b5d50; border-radius: 20px;">
                             <i class="fas fa-sign-in-alt me-1"></i> Login
                         </a>
                     </li>
