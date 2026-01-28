@@ -47,7 +47,7 @@ class AuthController extends Controller
         $request->session()->regenerateToken(); // Cegah CSRF
 
         // Redirect ke halaman login
-        return redirect()->route('auth.index');
+        return redirect()->route('login');
     }
 
     public function profile()
@@ -57,4 +57,4 @@ class AuthController extends Controller
     }
 }
 
-    
+

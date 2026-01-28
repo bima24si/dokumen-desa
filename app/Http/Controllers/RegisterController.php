@@ -50,7 +50,7 @@ class RegisterController extends Controller
             'role' => $request->role, // <--- PERBAIKAN UTAMA: Ambil dari request, JANGAN ditulis 'user'
         ]);
 
-        return redirect()->route('login-form')
+        return redirect()->route('login')
             ->with('success', 'Registrasi berhasil! Silakan login.');
     }
 }
